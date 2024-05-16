@@ -1,0 +1,35 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100vh - 56px); /* Resta el alto del header */
+}
+  
+  .logo-container {
+    margin-top: 160px; /* Espacio superior */
+    margin-bottom: 10px; /* Espacio inferior */
+    text-align: center; /* Centra horizontalmente el contenido */
+  }
+  
+  .list-container {
+    margin-top: 80px; /* Espacio superior */
+    margin-bottom: 10px; /* Espacio inferior */
+  }
+  .custom-background {
+    background: linear-gradient(to bottom right, #040e35, #042f5f, #04204f, #042c54, #041c44) !important;
+}
+
+.logo-margin {
+    width: 80%; /* Define el ancho de la imagen */
+    height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+    margin-left: auto; /* Margen izquierdo automático */
+    margin-right: auto; /* Margen derecho automático */
+}
+app-header {
+    background-color: white; /* Cambia el color de fondo del encabezado a blanco */
+}
+.boton.custom-color.custom-color {
+    --color: #fafafa; /* Cambia el color del texto del botón */
+    --background: rgb(255, 145, 0); /* Cambia el color de fondo del botón */
+  }

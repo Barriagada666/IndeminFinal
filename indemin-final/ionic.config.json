@@ -1,0 +1,7 @@
+{
+  "name": "indemin-final",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

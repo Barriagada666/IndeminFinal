@@ -1,0 +1,25 @@
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: white; /* Fondo blanco */
+}
+
+.logo-container {
+  margin-bottom: 20px; /* Margen inferior para separar del contenido siguiente */
+  padding: 20px; /* Margen interno para separar del borde exterior */
+  background-color: #ffffff; /* Opcional: color de fondo blanco */}
+
+.login-card {
+  width: 80%;
+  max-width: 400px; /* Ancho máximo de la tarjeta */
+}
+
+.custom-orange {
+  --ion-color-base: #f88400; /* Define el color de base como naranja */
+  --ion-color-base-rgb: 255,165,0; /* Opcional: define el color de base en formato RGB */
+}
+
+  
