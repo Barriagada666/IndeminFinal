@@ -1,10 +1,25 @@
 /* app.scss (o tu archivo de estilos principal) */
 
 ion-header.toolbar-custom-color {
-    --ion-color-primary: #085c7c; /* Cambia el color del texto si es necesario */
+  ion-toolbar {
+    background: #ffffff; /* Fondo blanco */
   }
+}
   
   .admin {
     color: #ffffff; /* Color del texto dentro de la barra de herramientas */
     font-size: 13px;
+}
+
+.toolbar-custom-title {
+  font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  margin-left: -10px; /* Ajusta este valor para acercar el título al botón de retroceso */
+}
+
+.toolbar-custom-button {
+  margin-right: -10px; /* Ajusta este valor para acercar el botón al título */
+}
+
+.toolbar-custom-title .admin {
+  font-size: 12px; /* Ajusta el tamaño de la fuente para el div admin */
 }

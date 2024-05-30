@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Checklist</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="checklists.length > 0">
+  <ion-list>
+    <div *ngFor="let checklist of checklists">
+      <ion-item-divider>
+        <ion-label>{{ checklist.nombre }}</ion-label>
+      </ion-item-divider>
+      <div *ngFor="let component of checklist.componentes">
+        <ion-item>
+          <ion-label>
+            <h2>{{ component.nombre }}</h2>
+          </ion-label>
+        </ion-item>
+        <div *ngFor="let task of component.tasks">
+          <ion-item>
+            <ion-label>{{ task.nombre }}</ion-label>
+            <ion-toggle [(ngModel)]="task.completed"></ion-toggle>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>
+<ion-content *ngIf="checklists.length === 0">
+  <p>No se ha encontrado un checklist para este código interno.</p>
+</ion-content>

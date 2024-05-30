@@ -1,30 +1,64 @@
-<app-header-menu title="Menu Administrador"></app-header-menu>
+<app-header-menu title="Menú Administrador"></app-header-menu>
 
 <ion-content class="ion-padding">
-  <ion-button id="open-modal" mode="ios" expand="block">Crear un checklist</ion-button>
+  <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()">Crear un checklist</ion-button>
+  <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()">Actualizar un checklist</ion-button>
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
-      <ion-header hidden>
+      <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">Cancelar</ion-button>
           </ion-buttons>
-          <ion-title>Welcome</ion-title>
+          <ion-title>{{ isUpdate ? 'Actualizar Checklist' : 'Crear Checklist' }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirm()" [strong]="true">{{ isUpdate ? 'Actualizar' : 'Guardar' }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-item>
-          <ion-input
-            label="Enter your name"
-            labelPlacement="stacked"
-            type="text"
-            placeholder="Your name"
-            [(ngModel)]="name"
-          ></ion-input>
-        </ion-item>
+        <form (ngSubmit)="submitChecklist()">
+          <ion-item>
+            <ion-label>Tipo de Máquina</ion-label>
+            <ion-select [(ngModel)]="selectedMachineType" name="machineType">
+              <ion-select-option *ngFor="let type of machineTypes" [value]="type">{{ type }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Asignar a</ion-label>
+            <ion-select [(ngModel)]="assignmentType" name="assignmentType">
+              <ion-select-option value="code">Código Interno</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="assignmentType === 'code'">
+            <ion-label>Código Interno</ion-label>
+            <ion-input [(ngModel)]="code" name="code" placeholder="Ingrese el código interno"></ion-input>
+          </ion-item>
+          <div *ngFor="let component of components; let i = index">
+            <ion-item>
+              <ion-input
+                placeholder="Nombre del Componente"
+                [(ngModel)]="component.nombre"
+                name="componentName{{i}}"
+              ></ion-input>
+            </ion-item>
+            <div *ngIf="components[i].tasks.length > 0">
+              <div *ngFor="let task of component.tasks; let j = index">
+                <ion-item>
+                  <ion-input
+                    placeholder="Nombre de la Tarea"
+                    [(ngModel)]="task.nombre"
+                    name="taskName{{i}}{{j}}"
+                  ></ion-input>
+                  <ion-button color="danger" (click)="removeTask(i, j)">Eliminar Tarea</ion-button>
+                </ion-item>
+              </div>
+            </div>
+            <ion-button (click)="addTask(i)">Agregar Tarea</ion-button>
+            <ion-button color="danger" (click)="removeComponent(i)">Eliminar Componente</ion-button>
+          </div>
+          <ion-button (click)="addComponent()">Agregar Componente</ion-button>
+        </form>
       </ion-content>
     </ng-template>
   </ion-modal>

@@ -8,7 +8,6 @@ import { AdminPageRoutingModule } from './admin-routing.module';
 
 import { AdminPage } from './admin.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { HeaderMenuComponent } from 'src/app/shared/components/header-menu/header-menu.component';
 
 @NgModule({
   imports: [
@@ -16,8 +15,8 @@ import { HeaderMenuComponent } from 'src/app/shared/components/header-menu/heade
     FormsModule,
     IonicModule,
     AdminPageRoutingModule,
-    SharedModule
+    SharedModule,
   ],
-  declarations: [AdminPage, HeaderMenuComponent]
+  declarations: [AdminPage]
 })
 export class AdminPageModule {}

@@ -1,6 +1,9 @@
 <ion-header class="ion-no-border toolbar-custom-color">
-  <ion-toolbar color="primary">
-    <ion-title>
+  <ion-toolbar>
+    <ion-buttons slot="start" class="toolbar-custom-button">
+      <ion-back-button *ngIf="showBackButton" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="toolbar-custom-title">
       <strong>{{title}}</strong>
       <div class="admin"></div>
     </ion-title>

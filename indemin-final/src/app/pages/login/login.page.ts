@@ -44,17 +44,22 @@ export class LoginPage implements OnInit {
   }
 
   async Login(userLoginInfo: userLogin) {
-    const usuario = await lastValueFrom(this.supabaseService.getLogin(userLoginInfo));
-    console.log(usuario);
-    if (usuario) {
-      console.log("Usuario existe...");
-      this.router.navigate(['/home'], { state: { userInfo: usuario}})
-    } else {
-      //NO EXISTE
-      console.log("Usuario no existe...");
-      this.presentToast("Usuario y/o Contraseña incorrectas")
+    try {
+      const usuario = await lastValueFrom(this.supabaseService.getLogin(userLoginInfo));
+      if (usuario && usuario.user) {
+        if (usuario.user.tipo_usuario === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      } else {
+        this.presentToast("Usuario y/o Contraseña incorrectas");
+      }
+    } catch (error) {
+      this.presentToast("Error en la autenticación. Por favor, inténtelo de nuevo.");
     }
   }
+  
 
   ngOnInit() {
     setTimeout(() => {
@@ -63,5 +68,3 @@ export class LoginPage implements OnInit {
   }
 
 }
-
-
