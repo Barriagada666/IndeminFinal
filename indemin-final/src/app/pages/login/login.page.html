@@ -1,4 +1,4 @@
-<app-header title="Login" [showBackButton]="false"></app-header>
+<app-header title="" [showBackButton]="false"></app-header>
 
 <ion-content class="ion-padding">
   <div class="center-container" [ngClass]="{'loaded': isLoaded}">
@@ -10,7 +10,7 @@
       <div id="container">
         <ion-list>
           <ion-item>
-            <ion-input label="Email" placeholder="Correo" [(ngModel)]="userLogin.email"></ion-input> 
+            <ion-input label="Email" placeholder="Correo" [(ngModel)]="userLogin.email"></ion-input>
           </ion-item>
           <ion-item>
             <ion-input type="password" label="Contraseña" placeholder="Contraseña" [(ngModel)]="userLogin.password"></ion-input>
