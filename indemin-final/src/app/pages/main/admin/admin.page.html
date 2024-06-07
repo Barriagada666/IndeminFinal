@@ -3,6 +3,8 @@
 <ion-content class="ion-padding">
   <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()">Crear un checklist</ion-button>
   <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()">Actualizar un checklist</ion-button>
+  
+  <!-- Aquí se define el modal -->
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
