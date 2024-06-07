@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Actualizar y Editar Checklist</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Buscar máquina:</ion-label>
+      <ion-input type="text" [(ngModel)]="searchQuery"></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="primary" (click)="buscarMaquina()">Buscar</ion-button>
+
+    <ion-text *ngIf="errorBusqueda" color="danger">
+      No se encontró ninguna máquina con el código proporcionado.
+    </ion-text>
+
+    <div *ngIf="checklist">
+      <ion-list>
+        <ion-item>
+          <ion-label>Código Interno:</ion-label>
+          <ion-input [value]="checklist.codigo_interno" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Nombre:</ion-label>
+          <ion-input [value]="checklist.nombre" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tipo de Máquina:</ion-label>
+          <ion-input [value]="checklist.id_tipo_maquina" readonly></ion-input>
+        </ion-item>
+
+        <ion-list-header>
+          Componentes:
+        </ion-list-header>
+        <div *ngFor="let component of checklist.componentes">
+          <ion-item>
+            <ion-label>Nombre del Componente:</ion-label>
+            <ion-input [value]="component.nombre" readonly></ion-input>
+          </ion-item>
+
+          <ion-list-header>
+            Tareas del Componente:
+          </ion-list-header>
+          <div *ngFor="let task of component.tasks">
+            <ion-item>
+              <ion-label>{{ task.nombre }}</ion-label>
+              <ion-checkbox [checked]="task.completed" disabled></ion-checkbox>
+            </ion-item>
+          </div>
+        </div>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

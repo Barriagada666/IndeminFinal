@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ChecklistService } from 'src/app/services/checklist.service';
 import { Checklist, Component as ChecklistComponent, Task } from 'src/app/models/Checklist';
+import { UpdateChecklistModalComponent } from '../checklist/update-checklist-moda/update-checklist-moda.component';
 
 @Component({
   selector: 'app-admin',
@@ -120,31 +121,17 @@ export class AdminPage implements OnInit {
     }
   }
 
-  openUpdateModal() {
-    if (this.checklistId !== null) {
-      this.isUpdate = true;
-      this.checklistService.getChecklistById(this.checklistId).subscribe(
-        async checklist => {
-          this.selectedMachineType = checklist.nombre;
-          this.assignmentType = 'code';
-          this.code = checklist.codigo_interno;
-          this.components = checklist.componentes;
-          const openModalButton = document.getElementById('open-modal');
-          if (openModalButton !== null) {
-            openModalButton.click();
-          } else {
-            console.error('Elemento "open-modal" no encontrado');
-          }
-        },
-        async error => {
-          console.error('Error al obtener el checklist:', error);
-          await this.presentToast('Error al obtener el checklist', 'danger');
-        }
-      );
-    } else {
-      console.error('checklistId es null');
-    }
+  async openUpdateModal() {
+    this.isUpdate = true;
+    const modal = await this.modalCtrl.create({
+      component: UpdateChecklistModalComponent,
+      componentProps: { isUpdate: true, checklistData: null } // Puedes pasar null como checklistData si no tienes datos disponibles
+    });
+    await modal.present();
   }
+  
+  
+  
 
   clearForm() {
     this.selectedMachineType = '';
