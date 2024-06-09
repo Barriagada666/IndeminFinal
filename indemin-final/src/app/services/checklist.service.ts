@@ -22,8 +22,8 @@ export class ChecklistService {
     );
   }
 
-  updateChecklist(checklist: Checklist): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/update_checklist`, checklist, { headers: this.supebaseheads }).pipe(
+  updateChecklist(id: number, checklist: Checklist): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/update_checklist/${id}`, checklist, { headers: this.supebaseheads }).pipe(
       catchError(this.handleError)
     );
   }
