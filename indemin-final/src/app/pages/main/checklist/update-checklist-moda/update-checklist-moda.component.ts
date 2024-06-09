@@ -129,10 +129,11 @@ export class UpdateChecklistModalComponent {
       const updatedChecklist: Checklist = {
         ...this.checklist,
         id_tipo_maquina: this.selectedMachineType,
-        componentes: this.components
+        componentes: this.components,
+        // Otros campos del checklist que necesitan actualizarse
       };
 
-      this.checklistService.updateChecklist(this.checklist.id_checklist, updatedChecklist).subscribe(
+      this.checklistService.editChecklist(this.checklist.id_checklist, updatedChecklist).subscribe(
         (response) => {
           console.log('Checklist updated successfully');
           this.closeModal();
