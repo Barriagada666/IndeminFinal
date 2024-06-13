@@ -1,65 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { SupabaseService } from 'src/app/services/supabase.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { userLogin } from 'src/app/models/userLogin';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
-import { lastValueFrom } from 'rxjs';
-
-
-
-
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { userLogin } from 'src/app/models/userLogin';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  
-
 })
 export class LoginPage implements OnInit {
 
-  userLogin = { 
-    email: '', 
-    password: '' 
+  userLogin: userLogin = {
+    email: '',
+    password: '',
+    tipo_usuario: ''
   };
 
-  isLoaded = false;
+  isLoaded: boolean = false;
 
-  constructor(private router:Router, private supabaseService: SupabaseService, public toastController: ToastController, private navCtrl: NavController) { }
-
-  async presentToast(message: string, duration: number = 2000) {
-    const toast = await this.toastController.create({
-      message,
-      duration,
-      position: 'bottom'
-    });
-    toast.present();
-  }
-
-  async Login(userLoginInfo: userLogin) {
-    try {
-      const usuario = await lastValueFrom(this.supabaseService.getLogin(userLoginInfo));
-      if (usuario && usuario.user) {
-        if (usuario.user.tipo_usuario === 'admin') {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/home']);
-        }
-      } else {
-        this.presentToast("Usuario y/o Contraseña incorrectas");
-      }
-    } catch (error) {
-      this.presentToast("Error en la autenticación. Por favor, inténtelo de nuevo.");
-    }
-  }
-  
+  constructor(
+    private router: Router,
+    private supabaseService: SupabaseService,
+    private toastController: ToastController
+  ) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -67,4 +31,50 @@ export class LoginPage implements OnInit {
     }, 800);
   }
 
+  async login() {
+    try {
+      const usuario = await this.supabaseService.login(this.userLogin).toPromise();
+
+      if (usuario && usuario.user) {
+        localStorage.setItem('tipo_usuario', usuario.user.tipo_usuario);
+        this.handleSuccessfulLogin(usuario.user.tipo_usuario);
+      } else {
+        this.presentToast("Usuario y/o Contraseña incorrectas");
+      }
+    } catch (error) {
+      console.error('Error en la autenticación:', error);
+      let errorMessage = 'Ocurrió un error en la autenticación. Por favor, inténtelo de nuevo.';
+      
+      // Transformar el error a string si es necesario
+      if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (error && typeof error === 'object' && error.hasOwnProperty('error')) {
+        errorMessage = error.toString();
+      }
+      
+      this.presentToast(errorMessage); // Mostrar mensaje de error recibido desde el servicio
+    }
+  }
+
+  handleSuccessfulLogin(tipoUsuario: string) {
+    console.log('Usuario logueado:', tipoUsuario);
+    console.log('Valor de tipo_usuario:', tipoUsuario);
+
+    if (tipoUsuario === 'admin') {
+      this.router.navigate(['/admin']);
+    } else {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 }

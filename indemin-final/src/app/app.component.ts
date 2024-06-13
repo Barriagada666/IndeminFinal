@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { UpdateChecklistModalComponent } from './pages/main/checklist/update-checklist-moda/update-checklist-moda.component'; // Asegúrate de que la ruta al componente sea correcta
+import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +8,16 @@ import { UpdateChecklistModalComponent } from './pages/main/checklist/update-che
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isUpdate: boolean = false;
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private router: Router,
+    private menu: MenuController
+  ) {}
 
-  async openCreateModal() {
-    this.isUpdate = false;
-    const modal = await this.modalController.create({
-      component: UpdateChecklistModalComponent,
-      componentProps: { isUpdate: this.isUpdate },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    console.log('Modal cerrado', data);
+
+  async closeMenu() {
+    if (await this.menu.isOpen('main-menu')) {
+      this.menu.close('main-menu');
+    }
   }
 }

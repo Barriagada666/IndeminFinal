@@ -19,7 +19,15 @@ const routes: Routes = [
   {
     path: 'checklist',
     loadChildren: () => import('./checklist/checklist.module').then( m => m.ChecklistPageModule)
+  },  {
+    path: 'ver-checklist',
+    loadChildren: () => import('./ver-checklist/ver-checklist.module').then( m => m.VerChecklistPageModule)
+  },
+  {
+    path: 'crear-maquina',
+    loadChildren: () => import('./crear-maquina/crear-maquina.module').then( m => m.CrearMaquinaPageModule)
   }
+
 
 ];
 

@@ -1,3 +1,28 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu menuId="main-menu" contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content>
+      <app-nav-menu></app-nav-menu>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-buttons slot="start">
+          <ion-menu-button menu="main-menu" autoHide="false"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Indemin</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content (click)="closeMenu()" class="main-content">
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
 </ion-app>
