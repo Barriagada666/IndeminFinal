@@ -1,0 +1,56 @@
+/* global.scss */
+
+/* Estilos para la página de Crear Máquina */
+ion-toolbar.toolbar-title {
+    --padding-start: 0; /* Ajuste para eliminar el relleno inicial de la toolbar */
+  }
+  
+  ion-title.centered-title {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+
+  
+.page-crear-maquina {
+    ion-card {
+      background-color: #F0F0F0; /* Color de fondo del card */
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra del card */
+      border-radius: 10px; /* Radio de borde del card */
+      margin: 20px; /* Margen exterior del card */
+    }
+  
+    ion-card-title {
+      font-weight: bold; /* Fuente en negrita para el título del card */
+      color: #00607F; /* Color de texto del título del card */
+    }
+  
+    form {
+      ion-item {
+        --ion-item-background: #FFFFFF; /* Color de fondo del item */
+        --ion-item-border-radius: 8px; /* Radio de borde del item */
+        --ion-item-padding-start: 16px; /* Espaciado interno del item */
+  
+        ion-label {
+          color: #00607F; /* Color del texto de la etiqueta */
+          font-weight: bold; /* Fuente en negrita para la etiqueta */
+        }
+  
+        ion-input,
+        ion-select {
+          border-radius: 8px; /* Radio de borde para los inputs y selects */
+        }
+  
+        ion-button {
+          margin-top: 16px; /* Margen superior del botón */
+          --background: #00607F; /* Color de fondo del botón */
+          --color: white; /* Color del texto del botón */
+          --border-radius: 8px; /* Radio de borde del botón */
+  
+          &:hover {
+            --background: #FF8F14; /* Color de fondo al hacer hover en el botón */
+          }
+        }
+      }
+    }
+  }

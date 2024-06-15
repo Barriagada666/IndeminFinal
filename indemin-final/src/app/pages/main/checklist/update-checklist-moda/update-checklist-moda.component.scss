@@ -20,3 +20,40 @@ ion-row, ion-col {
     background-color: #f0f0f0;
   }
   
+
+.custom-card {
+  --background: #00607F; /* Color de fondo del card */
+}
+
+/* Estilo para el botón de guardar cambios */
+.save-button {
+  --background: #FF8F14; /* Color de fondo del botón */
+  --color: #FFFFFF; /* Color del texto del botón */
+}
+
+/* Ajustes generales */
+ion-list-header,
+ion-item {
+  --padding-start: 16px;
+}
+
+ion-list-header {
+  font-weight: bold;
+}
+
+ion-item ion-label {
+  font-weight: bold;
+}
+
+ion-item ion-input {
+  border-radius: 8px;
+  --padding-end: 16px;
+}
+
+ion-item ion-select {
+  border-radius: 8px;
+}
+
+ion-item ion-checkbox {
+  --padding-end: 8px;
+}

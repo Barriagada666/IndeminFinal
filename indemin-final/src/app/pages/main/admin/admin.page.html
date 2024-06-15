@@ -1,7 +1,27 @@
-<ion-content class="ion-padding">
-  <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()">Crear un checklist</ion-button>
-  <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()">Actualizar un checklist</ion-button>
-  
+<ion-content>
+    <ion-grid>
+      <ion-row class="button-row">
+        <ion-col size="12" class="button-col">
+          <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()" class="custom-button">Crear un checklist</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="button-row">
+        <ion-col size="12" class="button-col">
+          <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()" class="custom-button">Actualizar un checklist</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="button-row">
+        <ion-col size="12" class="button-col">
+          <ion-button id="maquinaria" mode="ios" expand="block" (click)="navigateTo('crear-maquina')" class="custom-button">Maquinaria</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+
+ 
+ 
   <!-- Aquí se define el modal -->
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>

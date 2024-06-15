@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { userLogin } from 'src/app/models/userLogin';
+import { AppComponent } from 'src/app/app.component'
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private supabaseService: SupabaseService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private appComponent: AppComponent
   ) { }
 
   ngOnInit() {
@@ -34,7 +36,7 @@ export class LoginPage implements OnInit {
   async login() {
     try {
       const usuario = await this.supabaseService.login(this.userLogin).toPromise();
-
+  
       if (usuario && usuario.user) {
         localStorage.setItem('tipo_usuario', usuario.user.tipo_usuario);
         this.handleSuccessfulLogin(usuario.user.tipo_usuario);
@@ -55,8 +57,11 @@ export class LoginPage implements OnInit {
       }
       
       this.presentToast(errorMessage); // Mostrar mensaje de error recibido desde el servicio
+    } finally {
+      this.appComponent.checkSession(); // Llamar a checkSession después de intentar iniciar sesión
     }
   }
+  
 
   handleSuccessfulLogin(tipoUsuario: string) {
     console.log('Usuario logueado:', tipoUsuario);

@@ -1,0 +1,47 @@
+/* global.scss */
+
+// Definición de variables para los colores de la empresa
+  
+  // Estilos específicos para el card y los botones
+  .custom-card {
+    max-width: 400px; /* Ancho máximo del card */
+    margin: auto; /* Centrar el card en la pantalla */
+    background-color: #F0F0F0; /* Color de fondo del card */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra del card */
+  
+    ion-card-header {
+      background-color: #00607F; /* Color de fondo del encabezado */
+      color: white; /* Color del texto del encabezado */
+      text-align: center; /* Alineación del texto al centro */
+      padding: 16px; /* Espaciado interno */
+    }
+  
+    ion-card-content {
+      padding: 16px; /* Espaciado interno */
+    }
+  }
+  
+  .custom-button {
+    --background: #00607F; /* Color de fondo del botón */
+    --color: white; /* Color del texto del botón */
+    --border-radius: 8px; /* Radio de borde del botón */
+    font-weight: bold; /* Peso de la fuente */
+    height: 100%; /* Altura del botón para ocupar todo el espacio vertical disponible */
+  
+    &:hover {
+      --background: #ff8f14; /* Color de fondo al hacer hover */
+    }
+  }
+  
+  .button-row {
+    display: flex;
+    justify-content: center; /* Centrar los botones horizontalmente */
+    margin-bottom: 12px; /* Espacio inferior entre filas de botones */
+  }
+  
+  .button-col {
+    display: flex;
+    justify-content: center; /* Centrar los botones verticalmente */
+    align-items: center; /* Centrar los botones verticalmente */
+  }
+  

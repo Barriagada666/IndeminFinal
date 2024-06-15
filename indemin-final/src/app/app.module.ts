@@ -7,12 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { NavMenuComponent } from './pages/main/nav-menu/nav-menu.component'; // Asegúrate de que la ruta sea correcta
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavMenuComponent // Declaración del componente NavMenuComponent
+    AppComponent// Declaración del componente NavMenuComponent
   ],
   imports: [
     BrowserModule,

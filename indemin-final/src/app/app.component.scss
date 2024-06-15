@@ -4,4 +4,60 @@
     overflow: auto;
     position: relative;
   }
+
+  .logout-button {
+    --color: white;
+    --background: transparent;
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --transition: background-color 0.3s, color 0.3s;
+  
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  
+    ion-icon {
+      margin-right: 8px;
+      font-size: 20px;
+    }
+  
+    &:hover {
+      --color: white;
+      --background: red;
+    }
+  
+    &:active {
+      --color: white;
+      --background: darkred;
+    }
+  }
+
+  .custom-toolbar {
+    --background: #00607F; /* Define el color de fondo deseado */
+    --color: white; /* Define el color del texto */
+  }
+
+  .custom-item {
+    ion-item {
+      --background: transparent; /* Fondo transparente */
+      --color: initial; /* Color inicial del texto */
+      --padding-start: 16px; /* Espacio de inicio */
+      --padding-end: 16px; /* Espacio final */
+      --inner-padding-end: 16px; /* Relleno interno al final */
+      --inner-padding-start: 16px; /* Relleno interno al inicio */
+      transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    }
+  
+    ion-item:hover {
+      --background: #FF8F14; /* Cambio de fondo al hacer hover */
+      --color: white; /* Cambio de color de texto al hacer hover */
+    }
+  
+    ion-label {
+      font-size: 16px; /* Tamaño de la etiqueta */
+      --color: inherit; /* Heredar color del padre */
+    }
+  }
+  
   

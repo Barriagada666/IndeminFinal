@@ -1,26 +1,47 @@
 <ion-app>
   <ion-menu menuId="main-menu" contentId="main-content">
     <ion-header>
-      <ion-toolbar color="tertiary">
+      <ion-toolbar class="custom-toolbar">
         <ion-title>Menú</ion-title>
       </ion-toolbar>
     </ion-header>
     
     <ion-content>
-      <app-nav-menu></app-nav-menu>
+      <ion-list class="custom-item">
+        <ion-item (click)="navigateTo('home')">
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          <ion-label>Buscar Checklists</ion-label>
+        </ion-item>
+      
+        <ion-item *ngIf="isAdmin" (click)="navigateTo('admin')">
+          <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+          <ion-label>Administración</ion-label>
+        </ion-item>
+      
+        <ion-item (click)="navigateTo('ver-checklist')">
+          <ion-icon slot="start" name="list-outline"></ion-icon>
+          <ion-label>Ver Listado de Checklists</ion-label>
+        </ion-item>
+      </ion-list>
     </ion-content>
+    
   </ion-menu>
 
   <div class="ion-page" id="main-content">
-    <ion-header>
-      <ion-toolbar color="tertiary">
+    <ion-header *ngIf="isLoggedIn">
+      <ion-toolbar class="custom-toolbar">
         <ion-buttons slot="start">
           <ion-menu-button menu="main-menu" autoHide="false"></ion-menu-button>
         </ion-buttons>
         <ion-title>Indemin</ion-title>
+        <ion-button slot="end" (click)="cerrarSesion()" fill="clear" class="logout-button">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          Cerrar Sesión
+        </ion-button>        
       </ion-toolbar>
     </ion-header>
     
+    <!-- Contenido principal -->
     <ion-content (click)="closeMenu()" class="main-content">
       <ion-router-outlet></ion-router-outlet>
     </ion-content>

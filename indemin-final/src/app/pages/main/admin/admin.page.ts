@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { MenuController, ModalController, ToastController } from '@ionic/angular';
 import { ChecklistService } from 'src/app/services/checklist.service';
 import { Checklist, Component as ChecklistComponent, Task } from 'src/app/models/Checklist';
 import { UpdateChecklistModalComponent } from '../checklist/update-checklist-moda/update-checklist-moda.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -30,7 +31,9 @@ export class AdminPage implements OnInit {
   constructor(
     private checklistService: ChecklistService,
     private modalCtrl: ModalController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private router: Router,
+    private menu: MenuController
   ) {}
 
   ngOnInit() {}
@@ -129,8 +132,17 @@ export class AdminPage implements OnInit {
     });
     await modal.present();
   }
-  
-  
+
+  async closeMenu() {
+    if (await this.menu.isOpen('main-menu')) {
+      this.menu.close('main-menu');
+    }
+  }
+
+  navigateTo(route: string) {
+    this.router.navigate([`/${route}`]);
+    this.closeMenu();
+  }
   
 
   clearForm() {
