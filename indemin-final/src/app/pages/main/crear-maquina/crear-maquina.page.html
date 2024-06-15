@@ -1,13 +1,51 @@
+<!-- src/app/pages/crear-maquina/crear-maquina.page.html -->
+
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>crear-maquina</ion-title>
+    <ion-title>Crear Máquina</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">crear-maquina</ion-title>
+      <ion-title size="large">Crear Máquina</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Formulario para Crear Máquina</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="agregarMaquina()">
+        <ion-item>
+          <ion-label position="stacked">Código Interno</ion-label>
+          <ion-input type="text" [(ngModel)]="maquina.codigo_interno" name="codigo_interno" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo de Máquina</ion-label>
+          <ion-select [(ngModel)]="maquina.id_tipo_maquina" name="id_tipo_maquina" required>
+            <ion-select-option value="1">Retroexcavadora</ion-select-option>
+            <ion-select-option value="2">Bulldozer</ion-select-option>
+            <ion-select-option value="3">Excavadora</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Marca</ion-label>
+          <ion-input type="text" [(ngModel)]="maquina.marca" name="marca" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Modelo</ion-label>
+          <ion-input type="text" [(ngModel)]="maquina.modelo" name="modelo" required></ion-input>
+        </ion-item>
+
+        <ion-button type="submit" expand="block">Agregar Máquina</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
