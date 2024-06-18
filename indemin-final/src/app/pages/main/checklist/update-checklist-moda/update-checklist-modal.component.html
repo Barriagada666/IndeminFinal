@@ -63,7 +63,6 @@
                   <!-- Iterar sobre las tareas del componente -->
                   <ion-item *ngFor="let task of component.tasks; let j = index" lines="full">
                     <ion-text slot="start" color="warning"><ion-icon name="warning"></ion-icon>{{ task.nombre }}</ion-text>
-                    <ion-checkbox slot="end" [(ngModel)]="task.completed"></ion-checkbox>
                     <ion-button fill="clear" color="danger" slot="end" (click)="removeTask(i, j)">
                       <ion-icon name="close-circle-outline"></ion-icon>
                     </ion-button>

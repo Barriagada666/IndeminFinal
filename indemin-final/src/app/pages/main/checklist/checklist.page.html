@@ -19,7 +19,6 @@
         <div *ngFor="let task of component.tasks">
           <ion-item>
             <ion-label>{{ task.nombre }}</ion-label>
-            <ion-toggle [(ngModel)]="task.completed"></ion-toggle>
           </ion-item>
         </div>
       </div>

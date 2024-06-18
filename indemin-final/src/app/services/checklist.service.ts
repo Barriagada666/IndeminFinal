@@ -29,7 +29,24 @@ export class ChecklistService {
   }
 
   editChecklist(id: number, updatedChecklist: Checklist): Observable<any> {
-    return this.http.patch<any>(`${this.baseUrl}/edit_checklist/${id}`, updatedChecklist, { headers: this.supabaseHeaders }).pipe(
+    console.log('Sending PATCH request to:', `${this.baseUrl}/edit_checklist/${id}`);
+    console.log('Data sent:', updatedChecklist);
+
+    // Filtrar solo los datos necesarios para enviar al backend
+    const dataToSend = {
+      nombre: updatedChecklist.nombre,
+      id_tipo_maquina: updatedChecklist.id_tipo_maquina,
+      componentes: updatedChecklist.componentes.map(comp => ({
+        id_componente: comp.id_componente,
+        nombre: comp.nombre,
+        tasks: comp.tasks.map(task => ({
+          id_tarea: task.id_tarea,
+          nombre: task.nombre
+        }))
+      }))
+    };
+  
+    return this.http.patch<any>(`${this.baseUrl}/edit_checklist/${id}`, dataToSend, { headers: this.supabaseHeaders }).pipe(
       catchError(this.handleError)
     );
   }

@@ -3,7 +3,6 @@ export interface Task {
     nombre: string;
     frecuencia?: string;
     id_componente: number;
-    completed?: boolean;
 }
 
 export interface Component {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { UpdateChecklistModalComponent } from './update-checklist-moda.component'; // Asegúrate de que la ruta al componente sea correcta
+import { UpdateChecklistModalComponent } from './update-checklist-modal.component'; // Asegúrate de que la ruta al componente sea correcta
 
 describe('UpdateChecklistModalComponent', () => {
   let component: UpdateChecklistModalComponent;
