@@ -1,47 +1,76 @@
-/* global.scss */
+/* Estilos generales */
+ion-row, ion-col {
+  padding: 0 !important;
+}
 
-// Definición de variables para los colores de la empresa
-  
-  // Estilos específicos para el card y los botones
-  .custom-card {
-    max-width: 400px; /* Ancho máximo del card */
-    margin: auto; /* Centrar el card en la pantalla */
-    background-color: #F0F0F0; /* Color de fondo del card */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra del card */
-  
-    ion-card-header {
-      background-color: #00607F; /* Color de fondo del encabezado */
-      color: white; /* Color del texto del encabezado */
-      text-align: center; /* Alineación del texto al centro */
-      padding: 16px; /* Espaciado interno */
-    }
-  
-    ion-card-content {
-      padding: 16px; /* Espaciado interno */
-    }
+/* Estilo para el card personalizado */
+.custom-card {
+  --background: #00607F; /* Color de fondo del card */
+}
+
+/* Estilo para el botón de guardar cambios */
+.save-button {
+  --background: #FF8F14; /* Color de fondo del botón */
+  --color: #FFFFFF; /* Color del texto del botón */
+}
+
+/* Ajustes generales */
+ion-list-header,
+ion-item {
+  --padding-start: 16px;
+}
+
+ion-list-header {
+  font-weight: bold;
+}
+
+ion-item ion-label {
+  font-weight: bold;
+}
+
+ion-item ion-input,
+ion-item ion-select {
+  border-radius: 8px;
+}
+
+ion-item ion-checkbox {
+  --padding-end: 8px;
+}
+
+/* Centrar verticalmente y horizontalmente el contenido */
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding-top: 50px; /* Ajuste para separar los botones del navbar */
+}
+
+.custom-button {
+  --background: #00607F; /* Color de fondo del botón */
+  --color: white; /* Color del texto del botón */
+  --border-radius: 8px; /* Radio de borde del botón */
+  font-weight: bold; /* Peso de la fuente */
+  width: 100%; /* Ancho del botón para ocupar todo el espacio horizontal */
+  text-align: center; /* Asegura que el texto esté centrado */
+  max-width: 300px; /* Limitar el ancho máximo del botón */
+  margin: 10px 0; /* Espaciado vertical entre botones */
+
+  &:hover {
+    --background: #ff8f14; /* Color de fondo al hacer hover */
   }
-  
-  .custom-button {
-    --background: #00607F; /* Color de fondo del botón */
-    --color: white; /* Color del texto del botón */
-    --border-radius: 8px; /* Radio de borde del botón */
-    font-weight: bold; /* Peso de la fuente */
-    height: 100%; /* Altura del botón para ocupar todo el espacio vertical disponible */
-  
-    &:hover {
-      --background: #ff8f14; /* Color de fondo al hacer hover */
-    }
-  }
-  
-  .button-row {
-    display: flex;
-    justify-content: center; /* Centrar los botones horizontalmente */
-    margin-bottom: 12px; /* Espacio inferior entre filas de botones */
-  }
-  
-  .button-col {
-    display: flex;
-    justify-content: center; /* Centrar los botones verticalmente */
-    align-items: center; /* Centrar los botones verticalmente */
-  }
-  
+}
+
+.button-row {
+  display: flex;
+  justify-content: center; /* Centrar los botones horizontalmente */
+  width: 100%;
+}
+
+.button-col {
+  display: flex;
+  justify-content: center; /* Centrar los botones horizontalmente */
+  align-items: center; /* Centrar los botones verticalmente */
+  max-width: 300px; /* Limitar el ancho máximo de la columna */
+}

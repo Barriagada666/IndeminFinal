@@ -1,26 +1,9 @@
+/* Estilos generales */
 ion-row, ion-col {
-    padding: 0 !important;
-  }
-  
-  .component-wrapper {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .component-item {
-    background-color: #f8f8f8;
-  }
-  
-  .task-wrapper {
-    margin-left: 15px;
-  }
-  
-  .task-item {
-    background-color: #f0f0f0;
-  }
-  
+  padding: 0 !important;
+}
 
+/* Estilo para el card personalizado */
 .custom-card {
   --background: #00607F; /* Color de fondo del card */
 }
@@ -45,15 +28,82 @@ ion-item ion-label {
   font-weight: bold;
 }
 
-ion-item ion-input {
-  border-radius: 8px;
-  --padding-end: 16px;
-}
-
+ion-item ion-input,
 ion-item ion-select {
   border-radius: 8px;
 }
 
 ion-item ion-checkbox {
   --padding-end: 8px;
+}
+
+/* Centrar verticalmente y horizontalmente el contenido */
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  padding-top: 40px; /* Añade espacio arriba de la card */
+}
+
+.search-card {
+  --background: var(--ion-color-light);
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Header de la card */
+ion-card-header {
+  background: #00607F; /* Color corporativo */
+  color: #ffffff; /* Cambiar a blanco */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 10px;
+}
+
+ion-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff; /* Cambiar a blanco */
+}
+
+/* Añadir margen inferior al título */
+.custom-card-title {
+  margin-bottom: 15px; /* Ajusta el valor según sea necesario */
+}
+
+ion-item {
+  margin-bottom: 15px;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-input {
+  --background: var(--ion-color-light);
+  --border-radius: 8px;
+  padding: 10px;
+}
+
+ion-button {
+  --background: #FF8F14; /* Color corporativo */
+  --color: #fff;
+  --border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-text {
+  font-size: 1rem;
+  padding-top: 10px;
+}
+
+.ion-padding-start {
+  padding-left: 16px;
+}
+
+.ion-no-padding {
+  padding: 0;
 }

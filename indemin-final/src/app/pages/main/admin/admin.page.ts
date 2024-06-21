@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController, ModalController, ToastController } from '@ionic/angular';
 import { ChecklistService } from 'src/app/services/checklist.service';
-import { Checklist, Component as ChecklistComponent, Task } from 'src/app/models/Checklist';
-import { UpdateChecklistModalComponent } from '../checklist/update-checklist-moda/update-checklist-modal.component';
 import { Router } from '@angular/router';
+import { UpdateChecklistModalComponent } from '../checklist/update-checklist-moda/update-checklist-modal.component';
 
 @Component({
   selector: 'app-admin',
@@ -16,17 +15,9 @@ export class AdminPage implements OnInit {
   code: string = '';
   checklistId: number | null = null;
   isUpdate: boolean = false;
-  machineTypes: string[] = ['Retroexcavadora', 'Bulldozer', 'Excavadora'];
-  components: ChecklistComponent[] = [
-    {
-      id_componente: 1, // Placeholder ID
-      nombre: '',
-      id_checklist: 1, // Placeholder ID
-      tasks: [
-        { id_tarea: 1, nombre: '', id_componente: 1 } // Placeholder IDs
-      ]
-    }
-  ];
+  machineTypes: string[] = [];
+  componentes: any[] = [];
+  maquinas: any[] = [];
 
   constructor(
     private checklistService: ChecklistService,
@@ -36,43 +27,59 @@ export class AdminPage implements OnInit {
     private menu: MenuController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  buscarMaquina() {
+    if (this.code.length >= 2) { // Ajusta el valor mínimo según lo necesario
+      this.checklistService.getMaquinasByCodigoInterno(this.code).subscribe(
+        (maquinas: any[]) => {
+          this.maquinas = maquinas;
+        },
+        (error: any) => {
+          console.error('Error al buscar máquina:', error);
+        }
+      );
+    } else {
+      this.maquinas = [];
+    }
+  }
 
   addComponent() {
-    this.components.push({
-      id_componente: this.components.length + 1,
+    this.componentes.push({
+      id_componente: this.componentes.length + 1,
       nombre: '',
       id_checklist: this.checklistId || 1,
       tasks: [
-        { id_tarea: 1, nombre: '', id_componente: this.components.length + 1 }
+        { id_tarea: 1, nombre: '', id_componente: this.componentes.length + 1 }
       ]
     });
   }
 
   removeComponent(index: number) {
-    this.components.splice(index, 1);
+    this.componentes.splice(index, 1);
   }
 
   addTask(componentIndex: number) {
-    const newTaskId = this.components[componentIndex].tasks.length + 1;
-    this.components[componentIndex].tasks.push({
+    const newTaskId = this.componentes[componentIndex].tasks.length + 1;
+    this.componentes[componentIndex].tasks.push({
       id_tarea: newTaskId,
       nombre: '',
-      id_componente: this.components[componentIndex].id_componente
+      id_componente: this.componentes[componentIndex].id_componente
     });
   }
 
   removeTask(componentIndex: number, taskIndex: number) {
-    this.components[componentIndex].tasks.splice(taskIndex, 1);
+    this.componentes[componentIndex].tasks.splice(taskIndex, 1);
   }
 
   async submitChecklist() {
-    const checklistData: Checklist = {
+    const checklistData = {
       id_checklist: this.checklistId || 1, // Placeholder ID
       nombre: this.selectedMachineType,
       id_tipo_maquina: this.machineTypes.indexOf(this.selectedMachineType) + 1,
       codigo_interno: this.code,
-      componentes: this.components
+      componentes: this.componentes
     };
 
     this.checklistService.createChecklist(checklistData).subscribe(
@@ -84,8 +91,8 @@ export class AdminPage implements OnInit {
         }
       },
       async error => {
-        console.error('Esta maquina ya tiene un checklist:', error);
-        await this.presentToast('El codigo interno ya tiene un checklist asignado', 'danger');
+        console.error('Esta máquina ya tiene un checklist:', error);
+        await this.presentToast('El código interno ya tiene un checklist asignado', 'danger');
       }
     );
   }
@@ -143,13 +150,12 @@ export class AdminPage implements OnInit {
     this.router.navigate([`/${route}`]);
     this.closeMenu();
   }
-  
 
   clearForm() {
     this.selectedMachineType = '';
     this.assignmentType = '';
     this.code = '';
-    this.components = [
+    this.componentes = [
       {
         id_componente: 1, // Placeholder ID
         nombre: '',

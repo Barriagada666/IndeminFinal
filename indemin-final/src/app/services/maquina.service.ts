@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Maquina } from '../models/Maquina';
+import { Checklist } from '../models/Checklist';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,11 @@ export class MaquinaService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+  getChecklistByCodigoInterno(codigoInterno: string): Observable<Checklist[]> {
+    return this.http.get<Checklist[]>(`${this.baseUrl}/checklists?codigo_interno=${codigoInterno}`, { headers: this.supebaseheads }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: any): Observable<never> {

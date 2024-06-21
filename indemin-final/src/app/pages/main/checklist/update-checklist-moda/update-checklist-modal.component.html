@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Actualizar y Editar Checklist</ion-title>
+    <ion-title class="custom-toolbar-title">Actualizar y Editar Checklist</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="closeModal()">Cerrar</ion-button>
     </ion-buttons>
@@ -9,20 +9,30 @@
 
 <ion-content>
   <ion-grid class="ion-no-padding">
-    <!-- Row para la búsqueda -->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item lines="full">
-          <ion-label position="stacked">Buscar máquina:</ion-label>
-          <ion-input type="text" [(ngModel)]="searchQuery"></ion-input>
-        </ion-item>
-        <ion-button expand="block" color="primary" (click)="searchMachine()">Buscar</ion-button>
-        <ion-text *ngIf="errorBusqueda" color="danger" class="ion-padding-start">
-          No se encontró ninguna máquina con el código proporcionado.
-        </ion-text>
+    <ion-row class="search-container">
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card class="search-card">
+          <ion-card-header>
+            <ion-card-title>Buscar máquina</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item lines="full">
+              <ion-input type="text" [(ngModel)]="searchQuery" (ionInput)="filterMaquinas($event)" placeholder="Codigo Interno"></ion-input>
+            </ion-item>
+            <ion-list *ngIf="filteredMaquinas.length > 0">
+              <ion-item *ngFor="let maquina of filteredMaquinas" (click)="selectMaquina(maquina.codigo_interno)">
+                {{ maquina.codigo_interno }}
+              </ion-item>
+            </ion-list>
+            <ion-button expand="block" class="orange-button" (click)="searchMachine()">Buscar</ion-button>
+            <ion-text *ngIf="errorBusqueda" color="danger" class="ion-padding-start">
+              No se encontró ninguna máquina con el código proporcionado.
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
-
+    
     <!-- Row para mostrar la información del checklist -->
     <ion-row *ngIf="checklist">
       <ion-col size="12">
@@ -43,51 +53,53 @@
                   <ion-select-option *ngFor="let machineType of machineTypes" [value]="machineType.id">{{ machineType.name }}</ion-select-option>
                 </ion-select>
               </ion-item>
+            </ion-list>
 
-              <!-- Lista de componentes -->
-              <ion-list lines="full">
+            <!-- Lista de componentes -->
+            <ion-list lines="full">
+              <ion-list-header lines="full" class="ion-text-center">
+                Componentes y Tareas:
+              </ion-list-header>
+
+              <!-- Iterar sobre los componentes -->
+              <ion-item *ngFor="let component of components; let i = index" lines="full">
+                <ion-label position="stacked">Componente:</ion-label>
+                <ion-input [(ngModel)]="component.nombre"></ion-input>
+
+                <!-- Lista de tareas del componente -->
                 <ion-list-header lines="full" class="ion-text-center">
-                  Componentes y Tareas:
+                  Tareas:
                 </ion-list-header>
 
-                <!-- Iterar sobre los componentes -->
-                <ion-item *ngFor="let component of components; let i = index" lines="full">
-                  <ion-label position="stacked">Componente:</ion-label>
-                  <ion-input [(ngModel)]="component.nombre"></ion-input>
+                <!-- Iterar sobre las tareas del componente -->
+                <ion-item *ngFor="let task of component.tasks; let j = index" lines="full">
+                  <ion-input [(ngModel)]="task.nombre"></ion-input>
+                  <ion-button fill="clear" color="danger" slot="end" (click)="removeTask(i, j)">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
 
-                  <!-- Lista de tareas del componente -->
-                  <ion-list-header lines="full" class="ion-text-center">
-                    Tareas:
-                  </ion-list-header>
-
-                  <!-- Iterar sobre las tareas del componente -->
-                  <ion-item *ngFor="let task of component.tasks; let j = index" lines="full">
-                    <ion-text slot="start" color="warning"><ion-icon name="warning"></ion-icon>{{ task.nombre }}</ion-text>
-                    <ion-button fill="clear" color="danger" slot="end" (click)="removeTask(i, j)">
-                      <ion-icon name="close-circle-outline"></ion-icon>
-                    </ion-button>
-                  </ion-item>
-
-                  <!-- Formulario para agregar una nueva tarea -->
-                  <ion-item lines="none">
-                    <ion-input placeholder="Nueva Tarea" [(ngModel)]="newTaskName"></ion-input>
-                  <ion-button  expand="block" (click)="addTask(i)">Agregar</ion-button>
+                <!-- Formulario para agregar una nueva tarea -->
+                <ion-item lines="none">
+                  <ion-input placeholder="Nueva Tarea" [(ngModel)]="newTaskName[i]"></ion-input>
+                  <ion-button expand="block" (click)="addTask(i)">Agregar</ion-button>
+                </ion-item>
+                
+                <!-- Botones para eliminar componente -->
+                <ion-button expand="block" color="danger" (click)="removeComponent(i)">Eliminar Componente</ion-button>
               </ion-item>
-              <ion-button  expand="block" (click)="addComponent()">Agregar Componente</ion-button>
-              <!-- Botones para eliminar componente -->
-              <ion-button  expand="block" color="danger" (click)="removeComponent(i)">Eliminar</ion-button>
-            </ion-item>
-              </ion-list>
             </ion-list>
+
+            <ion-button expand="block" (click)="addComponent()">Agregar Componente</ion-button>
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
 
     <!-- Row para el botón de guardar cambios -->
-    <ion-row>
+    <ion-row *ngIf="checklist">
       <ion-col size="12">
-        <ion-button expand="block" fill="clear" class="save-button" (click)="saveChanges()">Guardar Cambios</ion-button>
+        <ion-button class="save-button" expand="block" fill="solid" color="primary" (click)="saveChanges()">Guardar Cambios</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

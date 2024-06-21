@@ -29,10 +29,6 @@ export class ChecklistService {
   }
 
   editChecklist(id: number, updatedChecklist: Checklist): Observable<any> {
-    console.log('Sending PATCH request to:', `${this.baseUrl}/edit_checklist/${id}`);
-    console.log('Data sent:', updatedChecklist);
-
-    // Filtrar solo los datos necesarios para enviar al backend
     const dataToSend = {
       nombre: updatedChecklist.nombre,
       id_tipo_maquina: updatedChecklist.id_tipo_maquina,
@@ -59,6 +55,18 @@ export class ChecklistService {
 
   getChecklistByCodigoInterno(codigoInterno: string): Observable<Checklist[]> {
     return this.http.get<Checklist[]>(`${this.baseUrl}/checklists?codigo_interno=${codigoInterno}`, { headers: this.supabaseHeaders }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getMachineTypes(): Observable<{ id: number, name: string }[]> {
+    return this.http.get<{ id: number, name: string }[]>(`${this.baseUrl}/machine-types`, { headers: this.supabaseHeaders }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getMaquinasByCodigoInterno(codigoInterno: string): Observable<any[]> {  
+    return this.http.get<any[]>(`${this.baseUrl}/maquinas?codigo_interno=${codigoInterno}`, { headers: this.supabaseHeaders }).pipe(
       catchError(this.handleError)
     );
   }

@@ -1,27 +1,22 @@
-<ion-content>
-    <ion-grid>
-      <ion-row class="button-row">
-        <ion-col size="12" class="button-col">
-          <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()" class="custom-button">Crear un checklist</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row class="button-row">
-        <ion-col size="12" class="button-col">
-          <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()" class="custom-button">Actualizar un checklist</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row class="button-row">
-        <ion-col size="12" class="button-col">
-          <ion-button id="maquinaria" mode="ios" expand="block" (click)="navigateTo('crear-maquina')" class="custom-button">Maquinaria</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+<ion-content class="center-content">
+  <ion-grid>
+    <ion-row class="button-row">
+      <ion-col size="12" class="button-col">
+        <ion-button id="open-modal" mode="ios" expand="block" (click)="openCreateModal()" class="custom-button">Crear un checklist</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="button-row">
+      <ion-col size="12" class="button-col">
+        <ion-button id="update-modal" mode="ios" expand="block" (click)="openUpdateModal()" class="custom-button">Actualizar un checklist</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="button-row">
+      <ion-col size="12" class="button-col">
+        <ion-button id="maquinaria" mode="ios" expand="block" (click)="navigateTo('crear-maquina')" class="custom-button">Maquinaria</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-
-
-
- 
- 
   <!-- Aquí se define el modal -->
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
@@ -50,11 +45,17 @@
               <ion-select-option value="code">Código Interno</ion-select-option>
             </ion-select>
           </ion-item>
+          
+          <!-- Corrección: La etiqueta </ion-item> debe estar en la posición correcta -->
           <ion-item *ngIf="assignmentType === 'code'">
             <ion-label>Código Interno</ion-label>
             <ion-input [(ngModel)]="code" name="code" placeholder="Ingrese el código interno"></ion-input>
           </ion-item>
-          <div *ngFor="let component of components; let i = index">
+          <ion-item *ngIf="assignmentType === 'code'">
+            <ion-label>Código Interno</ion-label>
+            <ion-input [(ngModel)]="code" name="code" placeholder="Ingrese el código interno"></ion-input>
+          </ion-item>
+          <div *ngFor="let component of componentes; let i = index">
             <ion-item>
               <ion-input
                 placeholder="Nombre del Componente"
@@ -62,7 +63,7 @@
                 name="componentName{{i}}"
               ></ion-input>
             </ion-item>
-            <div *ngIf="components[i].tasks.length > 0">
+            <div *ngIf="componentes[i].tasks.length > 0">
               <div *ngFor="let task of component.tasks; let j = index">
                 <ion-item>
                   <ion-input

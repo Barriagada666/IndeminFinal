@@ -59,5 +59,18 @@
       --color: inherit; /* Heredar color del padre */
     }
   }
+  .logout-container {
+    position: absolute;
+    bottom: 20px; /* Ajusta este valor para la distancia deseada desde el fondo */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .logout-button {
+    --background: transparent;
+    --color: #00607F; /* Color del texto del botón */
+    font-weight: bold;
+  }
   
   

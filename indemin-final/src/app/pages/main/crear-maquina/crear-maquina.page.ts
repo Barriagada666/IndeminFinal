@@ -1,10 +1,8 @@
-// src/app/pages/crear-maquina/crear-maquina.page.ts
-
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CrearMaquinaService } from '../../../services/crear-maquina';
-import { MaquinaService } from '../../../services/maquina.service';
-import { Maquina } from '../../../models/Maquina'; 
+import { Maquina } from '../../../models/Maquina';
+import { CrearMaquinaService } from 'src/app/services/crear-maquina.service';
+
 @Component({
   selector: 'app-crear-maquina',
   templateUrl: './crear-maquina.page.html',
@@ -13,19 +11,17 @@ import { Maquina } from '../../../models/Maquina';
 export class CrearMaquinaPage {
 
   maquina: Maquina = {
-    id_maquina: 0, // Se asignará automáticamente por el backend
+    id_maquina: 0, // Proveer un valor por defecto
     codigo_interno: '',
     id_tipo_maquina: 0,
-    id_faena: 0, // Se asignará dinámicamente
     marca: '',
-    modelo: ''
-  }
+    modelo: '',
+    id_faena: 0  // Este campo se puede actualizar dinámicamente si es necesario
+  };
 
   constructor(
     private router: Router,
-    private crearMaquinaService: CrearMaquinaService,
-    private GetMaquina: MaquinaService
-
+    private crearMaquinaService: CrearMaquinaService
   ) {}
 
   async agregarMaquina() {
@@ -35,11 +31,11 @@ export class CrearMaquinaPage {
       
       const response = await this.crearMaquinaService.crearMaquina(this.maquina).toPromise();
       console.log('Máquina creada exitosamente:', response);
-      // Aquí podrías redirigir a una página de éxito o realizar otras acciones después de crear la máquina
+      // Redirigir a una página de éxito o realizar otras acciones después de crear la máquina
+      this.router.navigate(['/ruta-de-exito']); // Cambia '/ruta-de-exito' por la ruta deseada
     } catch (error) {
       console.error('Error al crear la máquina:', error);
-      // Aquí podrías manejar el error y mostrar un mensaje al usuario
+      // Manejar el error y mostrar un mensaje al usuario
     }
   }
-
 }
