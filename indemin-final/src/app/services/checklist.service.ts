@@ -8,7 +8,7 @@ import { Checklist } from '../models/Checklist';
   providedIn: 'root'
 })
 export class ChecklistService {
-  private baseUrl = 'http://localhost:5000/api';  
+  private baseUrl = 'http://localhost:5500/api';  
 
   supabaseHeaders = new HttpHeaders()
     .set('Content-Type', 'application/json')
@@ -70,6 +70,23 @@ export class ChecklistService {
       catchError(this.handleError)
     );
   }
+
+  getStatus(): Observable<any[]> {
+    const url = `${this.baseUrl}/status`;
+    console.log('URL de solicitud:', url);
+    console.log('Cabeceras:', this.supabaseHeaders);
+  
+    return this.http.get<any[]>(url, { headers: this.supabaseHeaders }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateTaskStatus(taskId: number, newStatus: string): Observable<any> {
+    return this.http.patch<any>(`${this.baseUrl}/update_task_status/${taskId}`, { status: newStatus }, { headers: this.supabaseHeaders }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
 
   private handleError(error: any): Observable<any> {
     console.error('An error occurred:', error);

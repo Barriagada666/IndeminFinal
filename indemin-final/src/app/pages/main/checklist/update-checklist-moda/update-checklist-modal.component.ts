@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Maquina } from 'src/app/models/Maquina';
 import { ChecklistService } from 'src/app/services/checklist.service';
 import { MaquinaService } from 'src/app/services/maquina.service'; // Importa MaquinaService
-import { Checklist, Component as Componente, Task } from 'src/app/models/Checklist';
+import { Checklist, Component as Componente, Task, EstadoTarea } from 'src/app/models/Checklist'; // Importa EstadoTarea
 
 @Component({
   selector: 'app-update-checklist-modal',
@@ -130,7 +130,8 @@ export class UpdateChecklistModalComponent implements OnInit {
         const newTask: Task = {
           nombre: this.newTaskName[componentIndex].trim(),
           id_tarea: 0,
-          id_componente: componente.id_componente
+          id_componente: componente.id_componente,
+          status: [] // Inicializa el campo status como un array vacío de EstadoTarea
         };
         componente.tasks.push(newTask);
         this.newTaskName[componentIndex] = ''; // Limpiar el campo después de agregar la tarea
@@ -172,7 +173,8 @@ export class UpdateChecklistModalComponent implements OnInit {
           tasks: componente.tasks.map(task => ({
             id_tarea: task.id_tarea,
             nombre: task.nombre,
-            id_componente: task.id_componente
+            id_componente: task.id_componente,
+            status: task.status // Incluye el campo status en la copia de tareas
           }))
         }))
       };

@@ -8,7 +8,7 @@ import { IUserLogin } from '../models/IUserLogin';
 })
 export class UsuarioService {
 
-  private baseUrl = 'http://localhost:5000'; // URL de tu backend
+  private baseUrl = 'http://localhost:5500'; // URL de tu backend
 
   constructor(private http: HttpClient) { }
 

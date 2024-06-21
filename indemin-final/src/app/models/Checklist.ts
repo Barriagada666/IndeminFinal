@@ -3,6 +3,7 @@ export interface Task {
     nombre: string;
     frecuencia?: string;
     id_componente: number;
+    status: EstadoTarea[]
 }
 
 export interface Component {
@@ -19,3 +20,8 @@ export interface Checklist {
     id_tipo_maquina: number;
     componentes: Component[];
 }
+
+export interface EstadoTarea {
+    id_tarea: number; // 
+    status: string; // 
+  }
