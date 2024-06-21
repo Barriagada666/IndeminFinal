@@ -1,0 +1,27 @@
+/* Estilos para el botón tipo semáforo */
+.semaphore-button {
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-transform: capitalize;
+    margin-top: 8px;
+  }
+  
+  /* Estilos para el estado completado */
+  .green {
+    --background: #4CAF50;
+    --color: #ffffff;
+  }
+  
+  /* Estilos para el estado pendiente */
+  .yellow {
+    --background: #FFC107;
+    --color: #000000;
+  }
+  
+  /* Estilos para el estado vencido */
+  .red {
+    --background: #F44336;
+    --color: #ffffff;
+  }
+  

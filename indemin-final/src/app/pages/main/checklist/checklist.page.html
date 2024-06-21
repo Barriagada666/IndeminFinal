@@ -1,30 +1,49 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Checklist</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="checklists.length > 0">
   <ion-list>
-    <div *ngFor="let checklist of checklists">
-      <ion-item-divider>
-        <ion-label>{{ checklist.nombre }}</ion-label>
-      </ion-item-divider>
-      <div *ngFor="let component of checklist.componentes">
-        <ion-item>
-          <ion-label>
-            <h2>{{ component.nombre }}</h2>
-          </ion-label>
-        </ion-item>
-        <div *ngFor="let task of component.tasks">
-          <ion-item>
-            <ion-label>{{ task.nombre }}</ion-label>
-          </ion-item>
-        </div>
-      </div>
-    </div>
+    <ion-card *ngFor="let checklist of checklists">
+      <ion-card-header>
+        <ion-card-title>{{ checklist.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-card *ngFor="let component of checklist.componentes">
+            <ion-card-header>
+              <ion-card-subtitle>{{ component.nombre }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list>
+                <ion-item *ngFor="let task of component.tasks">
+                  <ion-label>{{ task.nombre }}</ion-label>
+                  <!-- Mostrar estado -->
+                  <ion-badge *ngIf="getStatus(task.id_tarea)" color="primary">{{ getStatus(task.id_tarea)!.status }}</ion-badge>
+                  <!-- Botón para cambiar estado -->
+                  <ion-button (click)="toggleTaskStatus(task)" color="success">
+                    <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
 </ion-content>
+
 <ion-content *ngIf="checklists.length === 0">
-  <p>No se ha encontrado un checklist para este código interno.</p>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-text color="medium">
+          <p>No se ha encontrado un checklist para este código interno.</p>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
