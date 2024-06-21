@@ -1,51 +1,42 @@
 <ion-header>
+
   <!-- Barra de carga para la carga inicial de checklists -->
-  <ion-progress-bar *ngIf="isLoadingChecklists" type="indeterminate" color="primary" class="loading-bar"></ion-progress-bar>
-  
+  <ion-progress-bar *ngIf="isLoadingChecklists" color="primary" class="loading-bar"></ion-progress-bar>
+
   <!-- Barra de carga para actualizar el estado de la tarea -->
-  <ion-progress-bar *ngIf="isUpdatingTaskStatus" type="indeterminate" color="primary" class="loading-bar"></ion-progress-bar>
+  <ion-progress-bar *ngIf="isUpdatingTaskStatus" color="primary" class="loading-bar"></ion-progress-bar>
 </ion-header>
 
-<ion-content>
-  <ng-container *ngIf="checklists.length > 0; else noChecklistsFound">
-    <ion-list>
-      <ion-card *ngFor="let checklist of checklists">
-        <ion-card-content>
-          <ion-list>
-            <ion-card *ngFor="let component of checklist.componentes">
-              <ion-card-header>
-                <ion-card-subtitle>{{ component.nombre }}</ion-card-subtitle>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-list>
-                  <ion-item *ngFor="let task of component.tasks">
-                    <ion-label>{{ task.nombre }}</ion-label>
-                    <!-- Mostrar estado -->
-                    <ion-badge *ngIf="getStatus(task.id_tarea)" color="primary">{{ getStatus(task.id_tarea)!.status }}</ion-badge>
-                    <!-- Botón para cambiar estado -->
-                    <ion-button (click)="toggleTaskStatus(task)" color="success">
-                      <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
-                    </ion-button>
-                  </ion-item>
-                </ion-list>
-              </ion-card-content>
-            </ion-card>
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
-  </ng-container>
+<ion-content *ngIf="checklists.length > 0">
+  <ion-list>
+    <ion-list *ngFor="let checklist of checklists">
+        <ion-title>{{ checklist.nombre }}</ion-title>
+        <ion-list>
+          <ion-card *ngFor="let component of checklist.componentes">
+              <ion-card-subtitle class="bold-text">{{ component.nombre }}</ion-card-subtitle>
+              <ion-list>
+                <ion-item *ngFor="let task of component.tasks">
+                  <ion-label class="text-center">{{ task.nombre }}</ion-label>
+                  <!-- Mostrar estado -->
+                  <ion-badge *ngIf="getStatus(task.id_tarea)" [color]="getBadgeColor(getStatus(task.id_tarea)?.status)">{{ getStatus(task.id_tarea)!.status }}</ion-badge>
+                  <!-- Botón para cambiar estado -->
+                  <ion-button (click)="toggleTaskStatus(task)">
+                    <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+          </ion-card>
+        </ion-list>
+  </ion-list>
 
-  <!-- Mensaje cuando no se encuentran checklists -->
-  <ng-template #noChecklistsFound>
-    <ion-grid>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-col size="12" class="ion-text-center">
-          <ion-text color="medium">
-            <p>No se ha encontrado un checklist para este código interno.</p>
-          </ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ng-template>
+<ion-content *ngIf="checklists.length === 0">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-text color="medium">
+          <p>No se ha encontrado un checklist para este código interno.</p>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

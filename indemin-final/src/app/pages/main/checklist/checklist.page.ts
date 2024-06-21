@@ -87,4 +87,11 @@ export class ChecklistPage implements OnInit {
       }
     );
   }
+
+  getBadgeColor(status: string | undefined): string {
+    if (!status) {
+      return 'medium'; // Default color if status is undefined
+    }
+    return status.toLowerCase() === 'finalizado' ? 'success' : 'warning';
+  }
 }

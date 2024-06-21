@@ -1,30 +1,14 @@
-/* Estilos para el botón tipo semáforo */
-.semaphore-button {
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-transform: capitalize;
-    margin-top: 8px;
+/* Estilo para la barra de carga */
+.loading-bar {
+    --height: 4px; /* Altura de la barra de carga */
+  }
+  .bold-text {
+    font-weight: bold;
   }
   
-  /* Estilos para el estado completado */
-  .green {
-    --background: #4CAF50;
-    --color: #ffffff;
-  }
-  
-  /* Estilos para el estado pendiente */
-  .yellow {
-    --background: #FFC107;
-    --color: #000000;
-  }
-  
-  /* Estilos para el estado vencido */
-  .red {
-    --background: #F44336;
-    --color: #ffffff;
-  }
-  .loading-bar {
-    --height: 20px; // Altura de la barra de carga
+  /* Ajuste de margen para ion-item */
+  ion-item {
+    --padding-start: 10px; /* Ajuste de margen izquierdo */
+    --padding-end: 10px; /* Ajuste de margen derecho */
   }
   
