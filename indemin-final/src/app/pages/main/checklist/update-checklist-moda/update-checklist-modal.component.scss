@@ -107,3 +107,9 @@ ion-text {
 .ion-no-padding {
   padding: 0;
 }
+.custom-progress-bar {
+  --background: #428bff; /* Color de fondo de la barra de progreso */
+  --height: 10px; /* Altura de la barra de progreso */
+  --buffer-background: transparent; /* Color del fondo del buffer */
+}
+

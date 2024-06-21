@@ -23,6 +23,8 @@ export class UpdateChecklistModalComponent implements OnInit {
   newTaskName: string[] = []; // Inicializar como un arreglo vacío
   showAlert: boolean = false;
   filteredMaquinas: Maquina[] = [];
+  isLoading: boolean = false; // Variable para controlar la visibilidad de la barra de carga
+  progressValue: number = 0;
 
   constructor(
     private modalController: ModalController,
@@ -70,6 +72,8 @@ export class UpdateChecklistModalComponent implements OnInit {
   searchMachine() {
     this.errorBusqueda = false;
     this.checklist = null;
+    this.isLoading = true; // Activar la barra de carga al iniciar la búsqueda
+    this.progressValue = 0; // Reiniciar el progreso
 
     if (this.searchQuery.trim() !== '') {
       this.maquinaService.getMachines(this.searchQuery).subscribe(
@@ -88,10 +92,12 @@ export class UpdateChecklistModalComponent implements OnInit {
                   this.components = this.checklist.componentes;
                   console.log('Checklist encontrado:', this.checklist);
                 }
+                this.isLoading = false; // Desactivar la barra de carga al finalizar la búsqueda
               },
               (error) => {
                 console.error('Error al buscar el checklist:', error);
                 this.errorBusqueda = true;
+                this.isLoading = false; // Desactivar la barra de carga en caso de error
               }
             );
           }
@@ -99,12 +105,15 @@ export class UpdateChecklistModalComponent implements OnInit {
         (error) => {
           console.error('Error al buscar la máquina:', error);
           this.errorBusqueda = true;
+          this.isLoading = false; // Desactivar la barra de carga en caso de error
         }
       );
     } else {
       this.errorBusqueda = true;
+      this.isLoading = false; // Desactivar la barra de carga si no hay consulta válida
     }
   }
+  
 
   clearForm() {
     this.selectedMachineType = null;
@@ -178,16 +187,25 @@ export class UpdateChecklistModalComponent implements OnInit {
           }))
         }))
       };
-
+  
       console.log('JSON enviado al servidor:', updatedChecklist);
-
+  
+      // Activar la barra de carga
+      this.isLoading = true;
+      this.progressValue = 0; // Puedes ajustar el valor de progreso inicial si es necesario
+  
       this.checklistService.editChecklist(this.checklist.id_checklist, updatedChecklist).subscribe(
         (response) => {
           console.log('Checklist updated successfully', response);
+          // Cerrar la barra de carga y modal al completar la solicitud
+          this.isLoading = false;
+          this.progressValue = 100; // Actualiza el valor de progreso al completar
+  
           this.closeModal();
         },
         (error) => {
           console.error('Error updating checklist', error);
+          this.isLoading = false; // Ocultar la barra de carga en caso de error
           this.presentAlert('Error al actualizar el checklist. Verifica los datos e inténtalo de nuevo.');
         }
       );
