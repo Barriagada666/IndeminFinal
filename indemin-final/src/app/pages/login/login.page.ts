@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { userLogin } from 'src/app/models/userLogin';
-import { AppComponent } from 'src/app/app.component'
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
     tipo_usuario: ''
   };
 
-  isLoaded: boolean = false;
+  isLoaded: boolean = true; // Cambiado a true inicialmente para mostrar la página
 
   constructor(
     private router: Router,
@@ -28,12 +28,11 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.isLoaded = true;
-    }, 800);
   }
 
   async login() {
+    this.isLoaded = false; // Activar la barra de carga al presionar el botón
+
     try {
       const usuario = await this.supabaseService.login(this.userLogin).toPromise();
   
@@ -58,6 +57,7 @@ export class LoginPage implements OnInit {
       
       this.presentToast(errorMessage); // Mostrar mensaje de error recibido desde el servicio
     } finally {
+      this.isLoaded = true; // Desactivar la barra de carga después de intentar iniciar sesión
       this.appComponent.checkSession(); // Llamar a checkSession después de intentar iniciar sesión
     }
   }

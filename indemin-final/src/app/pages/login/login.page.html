@@ -1,6 +1,7 @@
 <app-header title="" [showBackButton]="false"></app-header>
 
 <ion-content class="ion-padding">
+  <ion-progress-bar *ngIf="!isLoaded" type="indeterminate" color="primary"></ion-progress-bar>
   <div class="center-container" [ngClass]="{'loaded': isLoaded}">
     <div class="logo-container">
       <img src="assets/Indemin-logo.png" alt="Indemin Logo" class="logo-margin">

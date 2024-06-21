@@ -14,6 +14,8 @@ export class ChecklistPage implements OnInit {
   codigoInterno: string = '';
   checklists: Checklist[] = [];
   statuses: EstadoTarea[] = [];
+  isLoadingChecklists: boolean = false; // Variable para controlar la visibilidad de la barra de carga de checklists
+  isUpdatingTaskStatus: boolean = false; // Variable para controlar la visibilidad de la barra de carga al cambiar el estado de una tarea
 
   constructor(private route: ActivatedRoute, private checklistService: ChecklistService) { }
 
@@ -26,6 +28,7 @@ export class ChecklistPage implements OnInit {
   }
 
   loadChecklists() {
+    this.isLoadingChecklists = true; // Mostrar barra de carga al iniciar la carga de checklists
     this.checklistService.getChecklistByCodigoInterno(this.codigoInterno).subscribe(
       (data: Checklist[]) => {
         this.checklists = data.map(checklist => ({
@@ -33,14 +36,16 @@ export class ChecklistPage implements OnInit {
           componentes: checklist.componentes ? checklist.componentes.map((component: ChecklistComponent) => ({
             ...component,
             tasks: component.tasks ? component.tasks.map((task: Task) => ({
-              ...task,
-              estado: 'Neutro'  // Inicializar estado por defecto a 'Neutro'
+              ...task
             })) : []
           })) : []
         }));
       },
       (error) => {
         console.error('Error loading checklists:', error);
+      },
+      () => {
+        this.isLoadingChecklists = false; // Ocultar barra de carga al finalizar la carga de checklists
       }
     );
   }
@@ -61,6 +66,7 @@ export class ChecklistPage implements OnInit {
   }
 
   toggleTaskStatus(task: Task): void {
+    this.isUpdatingTaskStatus = true; // Mostrar barra de carga al cambiar el estado de la tarea
     const estadoActual = this.getStatus(task.id_tarea)?.status;
     const nuevoEstado = estadoActual === 'Finalizado' ? 'Pendiente' : 'Finalizado';
     
@@ -75,6 +81,9 @@ export class ChecklistPage implements OnInit {
       },
       (error) => {
         console.error('Error updating task status:', error);
+      },
+      () => {
+        this.isUpdatingTaskStatus = false; // Ocultar barra de carga al finalizar la actualización del estado de la tarea
       }
     );
   }
