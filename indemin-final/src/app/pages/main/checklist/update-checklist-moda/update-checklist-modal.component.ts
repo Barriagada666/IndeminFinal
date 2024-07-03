@@ -184,7 +184,10 @@ export class UpdateChecklistModalComponent implements OnInit {
             nombre: task.nombre,
             id_componente: task.id_componente,
             status: task.status // Incluye el campo status en la copia de tareas
-          }))
+          })
+        
+        
+        )
         }))
       };
   

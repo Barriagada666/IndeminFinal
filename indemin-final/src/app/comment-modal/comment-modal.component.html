@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="light">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Observaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item lines="full">
+    <ion-label position="stacked" class="ion-text-wrap">Agregar una Observacion</ion-label>
+    <ion-textarea [(ngModel)]="comment" rows="6"></ion-textarea>
+  </ion-item>
+  <ion-button expand="block" (click)="saveComment()" color="primary">Guardar</ion-button>
+</ion-content>

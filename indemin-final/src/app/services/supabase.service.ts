@@ -9,7 +9,7 @@ import { userLogin } from '../models/userLogin';
 })
 export class SupabaseService {
 
-  private baseUrl = 'http://localhost:5500/api';
+  private baseUrl = 'http://localhost:5000/api';
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Checklist } from '../models/Checklist';
   providedIn: 'root'
 })
 export class ChecklistService {
-  private baseUrl = 'http://localhost:5500/api';  
+  private baseUrl = 'http://localhost:5000/api';  
 
   supabaseHeaders = new HttpHeaders()
     .set('Content-Type', 'application/json')
@@ -86,7 +86,11 @@ export class ChecklistService {
       catchError(this.handleError)
     );
   }
-  
+
+  saveTaskComment(taskId: number, comment: string): Observable<any> {
+    const url = `${this.baseUrl}/save_task_comment/${taskId}`;
+    return this.http.patch<any>(url, { comment: comment });
+  }
 
   private handleError(error: any): Observable<any> {
     console.error('An error occurred:', error);

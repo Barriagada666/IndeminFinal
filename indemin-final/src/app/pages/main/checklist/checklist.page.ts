@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChecklistService } from 'src/app/services/checklist.service';
 import { Checklist, Component as ChecklistComponent, EstadoTarea, Task } from 'src/app/models/Checklist';
-import { Observable } from 'rxjs';
+import { ModalController, LoadingController } from '@ionic/angular';
+import { CommentModalComponent } from 'src/app/comment-modal/comment-modal.component';
 
 @Component({
   selector: 'app-checklist',
@@ -14,21 +15,39 @@ export class ChecklistPage implements OnInit {
   codigoInterno: string = '';
   checklists: Checklist[] = [];
   statuses: EstadoTarea[] = [];
-  isLoadingChecklists: boolean = false; // Variable para controlar la visibilidad de la barra de carga de checklists
-  isUpdatingTaskStatus: boolean = false; // Variable para controlar la visibilidad de la barra de carga al cambiar el estado de una tarea
+  isLoadingChecklists: boolean = false;
+  isUpdatingTaskStatus: boolean = false;
+  componentMetrics: Map<number, { totalTasks: number, finishedTasks: number }> = new Map();
 
-  constructor(private route: ActivatedRoute, private checklistService: ChecklistService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private checklistService: ChecklistService,
+    private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.codigoInterno = params['codigo_interno'];
+      this.presentLoading(); // Mostrar loading al iniciar la carga
       this.loadChecklists();
       this.loadStatuses();
     });
   }
 
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando checklist...',
+    });
+    await loading.present();
+  }
+
+  dismissLoading() {
+    this.loadingCtrl.dismiss();
+  }
+
   loadChecklists() {
-    this.isLoadingChecklists = true; // Mostrar barra de carga al iniciar la carga de checklists
+    this.isLoadingChecklists = true;
     this.checklistService.getChecklistByCodigoInterno(this.codigoInterno).subscribe(
       (data: Checklist[]) => {
         this.checklists = data.map(checklist => ({
@@ -40,12 +59,14 @@ export class ChecklistPage implements OnInit {
             })) : []
           })) : []
         }));
+        this.calculateTasksMetrics();
       },
       (error) => {
         console.error('Error loading checklists:', error);
       },
       () => {
-        this.isLoadingChecklists = false; // Ocultar barra de carga al finalizar la carga de checklists
+        this.isLoadingChecklists = false;
+        this.dismissLoading(); // Ocultar loading al finalizar la carga
       }
     );
   }
@@ -66,32 +87,101 @@ export class ChecklistPage implements OnInit {
   }
 
   toggleTaskStatus(task: Task): void {
-    this.isUpdatingTaskStatus = true; // Mostrar barra de carga al cambiar el estado de la tarea
+    this.isUpdatingTaskStatus = true;
     const estadoActual = this.getStatus(task.id_tarea)?.status;
     const nuevoEstado = estadoActual === 'Finalizado' ? 'Pendiente' : 'Finalizado';
-    
-    // Actualizar estado en el backend
+
     this.checklistService.updateTaskStatus(task.id_tarea, nuevoEstado).subscribe(
       () => {
-        // Actualizar estado en el frontend
         const estadoTarea = this.getStatus(task.id_tarea);
         if (estadoTarea) {
           estadoTarea.status = nuevoEstado;
         }
+        this.calculateTasksMetrics();
       },
       (error) => {
         console.error('Error updating task status:', error);
       },
       () => {
-        this.isUpdatingTaskStatus = false; // Ocultar barra de carga al finalizar la actualización del estado de la tarea
+        this.isUpdatingTaskStatus = false;
       }
     );
   }
 
   getBadgeColor(status: string | undefined): string {
     if (!status) {
-      return 'medium'; // Default color if status is undefined
+      return 'medium';
     }
     return status.toLowerCase() === 'finalizado' ? 'success' : 'warning';
   }
+
+  async openCommentModal(task: Task) {
+    const modal = await this.modalCtrl.create({
+      component: CommentModalComponent,
+      componentProps: {
+        taskId: task.id_tarea,
+        currentComment: this.getStatus(task.id_tarea)?.comment
+      }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data && data.data) {
+        const estadoTarea = this.getStatus(task.id_tarea);
+        if (estadoTarea) {
+          estadoTarea.comment = data.data;
+        }
+        this.calculateTasksMetrics();
+      }
+    });
+
+    return await modal.present();
+  }
+
+  calculateTasksMetrics(): void {
+    this.componentMetrics.clear();
+
+    this.checklists.forEach(checklist => {
+      checklist.componentes.forEach(component => {
+        let totalTasks = 0;
+        let finishedTasks = 0;
+
+        component.tasks.forEach(task => {
+          totalTasks++;
+          if (this.getStatus(task.id_tarea)?.status === 'Finalizado') {
+            finishedTasks++;
+          }
+        });
+
+        this.componentMetrics.set(component.id_componente, { totalTasks, finishedTasks });
+      });
+    });
+  }
+
+  // Obtener métricas de tareas por componente
+  getComponentMetrics(componentId: number): { totalTasks: number, finishedTasks: number } | undefined {
+    return this.componentMetrics.get(componentId);
+  }
+
+  // Calcular ancho de la barra de progreso segmentada por componente
+  getProgressSegmentWidth(component: ChecklistComponent): string {
+    const metrics = this.getComponentMetrics(component.id_componente);
+    if (!metrics || metrics.totalTasks === 0) {
+      return '0%';
+    }
+    const percentage = (metrics.finishedTasks / metrics.totalTasks) * 100;
+    return `${percentage}%`;
+  }
+
+  // Obtener color de la barra de progreso según el estado
+  getProgressBarColor(componentId: number): string {
+    const metrics = this.getComponentMetrics(componentId);
+    if (!metrics) {
+      return 'gray'; // Color predeterminado si no hay métricas disponibles
+    }
+    if (metrics.finishedTasks === metrics.totalTasks) {
+      return 'green'; // Si todas las tareas están completadas
+    }
+    return 'yellow'; // Color predeterminado para la barra de progreso
+  }
+
 }

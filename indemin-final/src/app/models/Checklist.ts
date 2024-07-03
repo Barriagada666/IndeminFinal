@@ -24,4 +24,5 @@ export interface Checklist {
 export interface EstadoTarea {
     id_tarea: number; // 
     status: string; // 
+    comment: string; //
   }

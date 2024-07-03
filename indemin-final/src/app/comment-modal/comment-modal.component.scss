@@ -1,0 +1,22 @@
+/* comment-modal.component.scss */
+
+ion-item {
+    margin-top: 20px;
+  }
+  
+  .modal-content {
+    background-color: #c2dae6; /* Fondo celeste claro */
+  }
+  
+  .label {
+    color: #000000; /* Color azul oscuro para el label */
+  }
+  
+  .textarea {
+    background-color: #d1d0d0; /* Fondo blanco para el textarea */
+    border: 1px solid #ccc; /* Borde del textarea */
+  }
+  
+  .save-button {
+    margin-top: 10px; /* Espacio superior para el botón Guardar */
+  }

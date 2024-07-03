@@ -1,5 +1,4 @@
 <ion-header>
-
   <!-- Barra de carga para la carga inicial de checklists -->
   <ion-progress-bar *ngIf="isLoadingChecklists" color="primary" class="loading-bar"></ion-progress-bar>
 
@@ -10,24 +9,37 @@
 <ion-content *ngIf="checklists.length > 0">
   <ion-list>
     <ion-list *ngFor="let checklist of checklists">
-        <ion-title>{{ checklist.nombre }}</ion-title>
-        <ion-list>
-          <ion-card *ngFor="let component of checklist.componentes">
-              <ion-card-subtitle class="bold-text">{{ component.nombre }}</ion-card-subtitle>
-              <ion-list>
-                <ion-item *ngFor="let task of component.tasks">
-                  <ion-label class="text-center">{{ task.nombre }}</ion-label>
-                  <!-- Mostrar estado -->
-                  <ion-badge *ngIf="getStatus(task.id_tarea)" [color]="getBadgeColor(getStatus(task.id_tarea)?.status)">{{ getStatus(task.id_tarea)!.status }}</ion-badge>
-                  <!-- Botón para cambiar estado -->
-                  <ion-button (click)="toggleTaskStatus(task)">
-                    <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
-                  </ion-button>
-                </ion-item>
-              </ion-list>
-          </ion-card>
-        </ion-list>
+      <ion-title>{{ checklist.nombre }}</ion-title>
+      <ion-list>
+        <ion-card *ngFor="let component of checklist.componentes">
+          <ion-card-subtitle class="bold-text">{{ component.nombre }}</ion-card-subtitle>
+          <ion-list>
+            <ion-item *ngFor="let task of component.tasks">
+              <ion-label class="text-center">{{ task.nombre }}</ion-label>
+              <!-- Botón para cambiar estado -->
+              <ion-button (click)="toggleTaskStatus(task)" [color]="getStatus(task.id_tarea)?.status === 'Finalizado' ? 'success' : 'warning'">
+                <ion-icon slot="icon-only" [name]="getStatus(task.id_tarea)?.status === 'Finalizado' ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
+              </ion-button>
+              <ion-button (click)="openCommentModal(task)" class="comment-button" shape="round">
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+          <!-- Métricas de tareas y barra de progreso -->
+          <div class="task-metrics">
+            <span>{{ getComponentMetrics(component.id_componente)?.finishedTasks }}/{{ getComponentMetrics(component.id_componente)?.totalTasks }}</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div class="progress-segment" [style.width]="getProgressSegmentWidth(component)" [style.background-color]="getProgressBarColor(component.id_componente)"></div>
+            </div>
+          </div>
+        </ion-card>
+      </ion-list>
+    </ion-list>
   </ion-list>
+
+</ion-content>
 
 <ion-content *ngIf="checklists.length === 0">
   <ion-grid>
