@@ -9,7 +9,7 @@ import { Maquina } from '../models/Maquina'; // Asegúrate de importar el modelo
 })
 export class CrearMaquinaService {
 
-  private baseUrl = 'http://localhost:5000/api'; // Base URL de tu backend
+  private baseUrl = 'https://backend-indemin.onrender.com/api'; // Base URL de tu backend
   private supabaseHeaders = new HttpHeaders()
     .set('Content-Type', 'application/json')
     .set('apikey', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxjc2VybGl3dXF3emZqdHJkY2liIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU2MjU3MjYsImV4cCI6MjAzMTIwMTcyNn0.h81cjxbMg7kWQ2Wv-YP3augY5_071Bpjfl57_jCXThQ');

@@ -4,6 +4,8 @@ import { ChecklistService } from 'src/app/services/checklist.service';
 import { Checklist, Component as ChecklistComponent, EstadoTarea, Task } from 'src/app/models/Checklist';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { CommentModalComponent } from 'src/app/comment-modal/comment-modal.component';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-checklist',
@@ -23,7 +25,8 @@ export class ChecklistPage implements OnInit {
     private route: ActivatedRoute,
     private checklistService: ChecklistService,
     private modalCtrl: ModalController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -98,6 +101,7 @@ export class ChecklistPage implements OnInit {
           estadoTarea.status = nuevoEstado;
         }
         this.calculateTasksMetrics();
+        this.presentStatusToast(nuevoEstado);
       },
       (error) => {
         console.error('Error updating task status:', error);
@@ -106,6 +110,17 @@ export class ChecklistPage implements OnInit {
         this.isUpdatingTaskStatus = false;
       }
     );
+  }
+
+  async presentStatusToast(status: string) {
+    const toast = await this.toastController.create({
+      message: `Estado actual: ${status}`,
+      duration: 1500, // 
+      position: 'bottom', //
+      cssClass: 'custom-toast' // 
+    });
+
+    await toast.present();
   }
 
   getBadgeColor(status: string | undefined): string {

@@ -33,3 +33,13 @@
   height: 100%;
   background-color: #007bff; /* Color base de la barra */
 }
+.custom-toast {
+  --background: rgba(0, 0, 0, 0.8); // color de fondo del toast
+  --color: #fff; // color del texto del toast
+  --border-radius: 8px; // radio de borde del toast
+  --padding-start: 16px; // espacio interior izquierdo del toast
+  --padding-end: 16px; // espacio interior derecho del toast
+  --padding-top: 12px; // espacio interior superior del toast
+  --padding-bottom: 12px; // espacio interior inferior del toast
+  font-size: 14px; // tamaño de fuente del texto del toast
+}
