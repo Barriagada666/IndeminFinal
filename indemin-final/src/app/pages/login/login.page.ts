@@ -27,8 +27,7 @@ export class LoginPage implements OnInit {
     private appComponent: AppComponent
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   async login() {
     this.isLoaded = false; // Activar la barra de carga al presionar el botón
@@ -37,8 +36,10 @@ export class LoginPage implements OnInit {
       const usuario = await this.supabaseService.login(this.userLogin).toPromise();
   
       if (usuario && usuario.user) {
+        // Guardar el tipo de usuario y el id de usuario en localStorage
         localStorage.setItem('tipo_usuario', usuario.user.tipo_usuario);
-        this.handleSuccessfulLogin(usuario.user.tipo_usuario);
+        localStorage.setItem('userId', usuario.user.id_usuario.toString()); // Almacenar como cadena en localStorage
+        this.handleSuccessfulLogin(usuario.user);
       } else {
         this.presentToast("Usuario y/o Contraseña incorrectas");
       }
@@ -62,12 +63,17 @@ export class LoginPage implements OnInit {
     }
   }
   
+  handleSuccessfulLogin(usuario: any) {
+    const userId = usuario.id_usuario; // Obtener el id del usuario
+    const userType = usuario.tipo_usuario; // Obtener el tipo del usuario
 
-  handleSuccessfulLogin(tipoUsuario: string) {
-    console.log('Usuario logueado:', tipoUsuario);
-    console.log('Valor de tipo_usuario:', tipoUsuario);
+    // Mostrar los datos del usuario en la consola
+    console.log('Usuario logueado:', usuario);
+    console.log('ID de usuario:', userId);
+    console.log('Tipo de usuario:', userType);
 
-    if (tipoUsuario === 'admin') {
+    // Redirigir a la página correspondiente según el tipo de usuario
+    if (userType === 'admin') {
       this.router.navigate(['/admin']);
     } else {
       this.router.navigate(['/home']);

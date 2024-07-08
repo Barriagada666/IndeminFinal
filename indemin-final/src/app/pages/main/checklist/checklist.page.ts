@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChecklistService } from 'src/app/services/checklist.service';
-import { Checklist, Component as ChecklistComponent, EstadoTarea, Task } from 'src/app/models/Checklist';
-import { ModalController, LoadingController } from '@ionic/angular';
-import { CommentModalComponent } from 'src/app/comment-modal/comment-modal.component';
-import { ToastController } from '@ionic/angular';
-
+import { Checklist, Component as ChecklistComponent, ChecklistRealizado, Task } from 'src/app/models/Checklist';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { ChecklistRealizadoService } from 'src/app/services/checklist-realizado.service'; // Importa el servicio ChecklistRealizadoService
 
 @Component({
   selector: 'app-checklist',
@@ -13,20 +11,23 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./checklist.page.scss'],
 })
 export class ChecklistPage implements OnInit {
-
+  loggedUserId: number = parseInt(localStorage.getItem('userId') || '0');
   codigoInterno: string = '';
   checklists: Checklist[] = [];
-  statuses: EstadoTarea[] = [];
   isLoadingChecklists: boolean = false;
   isUpdatingTaskStatus: boolean = false;
   componentMetrics: Map<number, { totalTasks: number, finishedTasks: number }> = new Map();
+  taskStatuses: { [key: number]: string } = {};
+  id_checklist: number = 0;
+  observaciones: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private checklistService: ChecklistService,
+    private checklistRealizadoService: ChecklistRealizadoService, // Inyecta el servicio ChecklistRealizadoService
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private toastController: ToastController
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -34,7 +35,7 @@ export class ChecklistPage implements OnInit {
       this.codigoInterno = params['codigo_interno'];
       this.presentLoading(); // Mostrar loading al iniciar la carga
       this.loadChecklists();
-      this.loadStatuses();
+      this.loggedUserId = parseInt(localStorage.getItem('userId') || '0');
     });
   }
 
@@ -62,6 +63,21 @@ export class ChecklistPage implements OnInit {
             })) : []
           })) : []
         }));
+
+        // Asignar el id_checklist al primer elemento de la lista
+        if (this.checklists.length > 0) {
+          this.id_checklist = this.checklists[0].id_checklist; // Asignar el primer id_checklist
+        }
+
+        // Inicializar estados de tareas
+        this.checklists.forEach(checklist => {
+          checklist.componentes.forEach(component => {
+            component.tasks.forEach(task => {
+              this.taskStatuses[task.id_tarea] = 'gray'; // Inicializar en 'gray', 'green', 'red', etc.
+            });
+          });
+        });
+
         this.calculateTasksMetrics();
       },
       (error) => {
@@ -74,82 +90,43 @@ export class ChecklistPage implements OnInit {
     );
   }
 
-  loadStatuses(): void {
-    this.checklistService.getStatus().subscribe(
-      (data) => {
-        this.statuses = data;
-      },
-      (error) => {
-        console.error('Error loading statuses:', error);
-      }
-    );
-  }
-
-  getStatus(taskId: number): EstadoTarea | undefined {
-    return this.statuses.find(status => status.id_tarea === taskId);
-  }
-
-  toggleTaskStatus(task: Task): void {
-    this.isUpdatingTaskStatus = true;
-    const estadoActual = this.getStatus(task.id_tarea)?.status;
-    const nuevoEstado = estadoActual === 'Finalizado' ? 'Pendiente' : 'Finalizado';
-
-    this.checklistService.updateTaskStatus(task.id_tarea, nuevoEstado).subscribe(
-      () => {
-        const estadoTarea = this.getStatus(task.id_tarea);
-        if (estadoTarea) {
-          estadoTarea.status = nuevoEstado;
-        }
-        this.calculateTasksMetrics();
-        this.presentStatusToast(nuevoEstado);
-      },
-      (error) => {
-        console.error('Error updating task status:', error);
-      },
-      () => {
-        this.isUpdatingTaskStatus = false;
-      }
-    );
-  }
-
-  async presentStatusToast(status: string) {
-    const toast = await this.toastController.create({
-      message: `Estado actual: ${status}`,
-      duration: 1500, // 
-      position: 'bottom', //
-      cssClass: 'custom-toast' // 
-    });
-
-    await toast.present();
-  }
-
-  getBadgeColor(status: string | undefined): string {
-    if (!status) {
-      return 'medium';
+  toggleTaskStatus(taskId: number) {
+    if (!this.taskStatuses[taskId]) {
+      this.taskStatuses[taskId] = 'gray';
+    } else if (this.taskStatuses[taskId] === 'gray') {
+      this.taskStatuses[taskId] = 'green';
+    } else if (this.taskStatuses[taskId] === 'green') {
+      this.taskStatuses[taskId] = 'red';
+    } else {
+      this.taskStatuses[taskId] = 'gray';
     }
-    return status.toLowerCase() === 'finalizado' ? 'success' : 'warning';
+    this.calculateTasksMetrics();
   }
 
-  async openCommentModal(task: Task) {
-    const modal = await this.modalCtrl.create({
-      component: CommentModalComponent,
-      componentProps: {
-        taskId: task.id_tarea,
-        currentComment: this.getStatus(task.id_tarea)?.comment
-      }
-    });
+  getButtonColor(taskId: number): string {
+    if (!this.taskStatuses[taskId]) {
+      return 'medium';
+    } else if (this.taskStatuses[taskId] === 'gray') {
+      return 'medium';
+    } else if (this.taskStatuses[taskId] === 'green') {
+      return 'success';
+    } else if (this.taskStatuses[taskId] === 'red') {
+      return 'danger';
+    }
+    return 'medium';
+  }
 
-    modal.onDidDismiss().then((data) => {
-      if (data && data.data) {
-        const estadoTarea = this.getStatus(task.id_tarea);
-        if (estadoTarea) {
-          estadoTarea.comment = data.data;
-        }
-        this.calculateTasksMetrics();
-      }
-    });
-
-    return await modal.present();
+  getButtonIcon(taskId: number): string {
+    if (!this.taskStatuses[taskId]) {
+      return 'ellipse-outline';
+    } else if (this.taskStatuses[taskId] === 'gray') {
+      return 'ellipse-outline';
+    } else if (this.taskStatuses[taskId] === 'green') {
+      return 'checkmark-outline';
+    } else if (this.taskStatuses[taskId] === 'red') {
+      return 'close-outline';
+    }
+    return 'ellipse-outline';
   }
 
   calculateTasksMetrics(): void {
@@ -162,7 +139,7 @@ export class ChecklistPage implements OnInit {
 
         component.tasks.forEach(task => {
           totalTasks++;
-          if (this.getStatus(task.id_tarea)?.status === 'Finalizado') {
+          if (this.taskStatuses[task.id_tarea] === 'green') {
             finishedTasks++;
           }
         });
@@ -172,12 +149,10 @@ export class ChecklistPage implements OnInit {
     });
   }
 
-  // Obtener métricas de tareas por componente
   getComponentMetrics(componentId: number): { totalTasks: number, finishedTasks: number } | undefined {
     return this.componentMetrics.get(componentId);
   }
 
-  // Calcular ancho de la barra de progreso segmentada por componente
   getProgressSegmentWidth(component: ChecklistComponent): string {
     const metrics = this.getComponentMetrics(component.id_componente);
     if (!metrics || metrics.totalTasks === 0) {
@@ -187,16 +162,66 @@ export class ChecklistPage implements OnInit {
     return `${percentage}%`;
   }
 
-  // Obtener color de la barra de progreso según el estado
   getProgressBarColor(componentId: number): string {
     const metrics = this.getComponentMetrics(componentId);
     if (!metrics) {
-      return 'gray'; // Color predeterminado si no hay métricas disponibles
+      return 'gray'; // Color por defecto si no hay métricas disponibles
     }
     if (metrics.finishedTasks === metrics.totalTasks) {
-      return 'green'; // Si todas las tareas están completadas
+      return 'green'; // Color verde si todas las tareas están completadas
     }
-    return 'yellow'; // Color predeterminado para la barra de progreso
+    return 'yellow'; // Color amarillo si hay tareas incompletas
+  }
+
+  async presentIncompleteTasksAlert(componentName: string, taskName: string) {
+    const alert = await this.alertController.create({
+      header: 'Tarea sin completar',
+      message: `La tarea '${taskName}' del componente '${componentName}' no está completada. Debes completar todas las tareas antes de guardar.`,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  onSubmit() {
+    let incompleteTaskFound = false;
+  
+    this.checklists.forEach(checklist => {
+      checklist.componentes.forEach(component => {
+        component.tasks.forEach(task => {
+          if (this.taskStatuses[task.id_tarea] !== 'green') {
+            this.presentIncompleteTasksAlert(component.nombre, task.nombre);
+            incompleteTaskFound = true;
+          }
+        });
+      });
+    });
+  
+    if (!incompleteTaskFound) {
+      const checklistRealizado: ChecklistRealizado = {
+        id_checklist: this.id_checklist,
+        id_usuario: this.loggedUserId,
+        fecha_realizacion: new Date().toISOString(),
+        comentarios: this.observaciones
+      };
+  
+      // Mostrar los datos que se enviarán al backend en la consola
+      console.log('Datos a enviar al backend:', checklistRealizado);
+  
+      // Lógica para enviar los datos al backend
+      this.checklistRealizadoService.guardarChecklist(checklistRealizado).subscribe(
+        response => {
+          console.log('Respuesta del backend:', response);
+          // Aquí puedes manejar la respuesta del backend si es necesario
+          // Por ejemplo, mostrar un mensaje de éxito o navegar a otra página
+        },
+        error => {
+          console.error('Error al guardar el checklist:', error);
+          // Aquí puedes manejar el error si ocurre alguno
+          // Por ejemplo, mostrar un mensaje de error al usuario
+        }
+      );
+    }
   }
 
 }

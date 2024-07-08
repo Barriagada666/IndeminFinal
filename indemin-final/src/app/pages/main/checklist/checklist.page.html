@@ -6,49 +6,55 @@
   <ion-progress-bar *ngIf="isUpdatingTaskStatus" color="primary" class="loading-bar"></ion-progress-bar>
 </ion-header>
 
-<ion-content *ngIf="checklists.length > 0">
-  <ion-list>
-    <ion-list *ngFor="let checklist of checklists">
-      <ion-title>{{ checklist.nombre }}</ion-title>
-      <ion-list>
-        <ion-card *ngFor="let component of checklist.componentes">
-          <ion-card-subtitle class="bold-text">{{ component.nombre }}</ion-card-subtitle>
-          <ion-list>
-            <ion-item *ngFor="let task of component.tasks">
-              <ion-label class="text-center">{{ task.nombre }}</ion-label>
-              <!-- Botón para cambiar estado -->
-              <ion-button (click)="toggleTaskStatus(task)" [color]="getStatus(task.id_tarea)?.status === 'Finalizado' ? 'success' : 'warning'">
-                <ion-icon slot="icon-only" [name]="getStatus(task.id_tarea)?.status === 'Finalizado' ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
-              </ion-button>
-              <ion-button (click)="openCommentModal(task)" class="comment-button" shape="round">
-                <ion-icon slot="icon-only" name="add"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-list>
-          <!-- Métricas de tareas y barra de progreso -->
-          <div class="task-metrics">
-            <span>{{ getComponentMetrics(component.id_componente)?.finishedTasks }}/{{ getComponentMetrics(component.id_componente)?.totalTasks }}</span>
-          </div>
-          <div class="progress-bar-container">
-            <div class="progress-bar">
-              <div class="progress-segment" [style.width]="getProgressSegmentWidth(component)" [style.background-color]="getProgressBarColor(component.id_componente)"></div>
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #checklistForm="ngForm">
+    <ion-list *ngIf="checklists.length > 0">
+      <ion-list *ngFor="let checklist of checklists">
+        <ion-title>{{ checklist.nombre }}</ion-title>
+        <ion-list>
+          <ion-card *ngFor="let component of checklist.componentes">
+            <ion-card-subtitle class="bold-text">{{ component.nombre }}</ion-card-subtitle>
+            <ion-list>
+              <ion-item *ngFor="let task of component.tasks">
+                <ion-label class="text-center">{{ task.nombre }}</ion-label>
+                <!-- Botón para cambiar estado -->
+                <ion-button [color]="getButtonColor(task.id_tarea)" (click)="toggleTaskStatus(task.id_tarea)">
+                  <ion-icon slot="icon-only" [name]="getButtonIcon(task.id_tarea)"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+            <!-- Métricas de tareas y barra de progreso -->
+            <div class="task-metrics">
+              <span>{{ getComponentMetrics(component.id_componente)?.finishedTasks }}/{{ getComponentMetrics(component.id_componente)?.totalTasks }}</span>
             </div>
-          </div>
-        </ion-card>
+            <div class="progress-bar-container">
+              <div class="progress-bar">
+                <div class="progress-segment" [style.width]="getProgressSegmentWidth(component)"
+                  [style.background-color]="getProgressBarColor(component.id_componente)"></div>
+              </div>
+            </div>
+          </ion-card>
+        </ion-list>
       </ion-list>
     </ion-list>
+    <!-- Campo de observaciones para el checklist -->
+    <ion-item *ngIf="!isLoadingChecklists">
+      <ion-label position="stacked">Observaciones</ion-label>
+      <ion-textarea [(ngModel)]="observaciones" name="observaciones" rows="6"></ion-textarea>
+    </ion-item>
+    <!-- Botón de guardar -->
+    <ion-button expand="full" type="submit">Guardar</ion-button>
+  </form>
+
+  <ion-list *ngIf="checklists.length === 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <ion-text color="medium">
+            <p>No se ha encontrado un checklist para este código interno.</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-list>
-
-</ion-content>
-
-<ion-content *ngIf="checklists.length === 0">
-  <ion-grid>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <ion-text color="medium">
-          <p>No se ha encontrado un checklist para este código interno.</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>
