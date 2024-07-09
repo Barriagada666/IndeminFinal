@@ -29,6 +29,7 @@
     "@capacitor/preferences": "^6.0.0",
     "@capacitor/status-bar": "6.0.0",
     "@ionic/angular": "^8.0.0",
+    "@ionic/core": "^8.2.5",
     "@supabase/supabase-js": "^2.43.1",
     "cors": "^2.8.5",
     "flask-cors": "^0.0.1",
