@@ -1,3 +1,7 @@
 {
-    "liveServer.settings.port": 5501
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@ionic/angular/common",
+    "@ionic/angular/standalone"
+  ],
+  "git.ignoreLimitWarning": true
 }
