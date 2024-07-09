@@ -9,7 +9,7 @@ import { userLogin } from '../models/userLogin';
 })
 export class SupabaseService {
 
-  private baseUrl = 'https://backend-indemin.onrender.com/api';
+  private baseUrl = 'https://backend-indemin-q64w.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

@@ -7,7 +7,7 @@ import { ChecklistRealizado } from '../models/Checklist';
   providedIn: 'root'
 })
 export class ChecklistRealizadoService {
-  private baseUrl = 'https://backend-indemin.onrender.com/api'; // Cambia esta URL por la URL de tu backend
+  private baseUrl = 'https://backend-indemin-q64w.onrender.com/api'; // Cambia esta URL por la URL de tu backend
 
   constructor(private http: HttpClient) { }
 

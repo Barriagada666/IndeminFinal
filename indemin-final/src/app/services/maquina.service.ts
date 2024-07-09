@@ -9,7 +9,7 @@ import { Checklist } from '../models/Checklist';
   providedIn: 'root'
 })
 export class MaquinaService {
-  private baseUrl = 'https://backend-indemin.onrender.com/api'; // Base URL de tu backend
+  private baseUrl = 'https://backend-indemin-q64w.onrender.com/api'; // Base URL de tu backend
 
   supebaseheads = new HttpHeaders()
   .set('apikey', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxjc2VybGl3dXF3emZqdHJkY2liIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU2MjU3MjYsImV4cCI6MjAzMTIwMTcyNn0.h81cjxbMg7kWQ2Wv-YP3augY5_071Bpjfl57_jCXThQ');
