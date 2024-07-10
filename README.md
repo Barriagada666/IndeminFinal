@@ -17,6 +17,7 @@ CheckMTTO (Indemin) es una aplicación móvil para el monitoreo de checklists de
 ## - Deployment
 
 Se debe instalar Nodejs LTS
+
 ![App Screenshot](https://i.ibb.co/R7WgDf4/node.png")
 
 Proyecto basado en:
@@ -36,5 +37,7 @@ ionic serve
 
 ## Capturas de pantalla
 
-![App Screenshot](https://i.ibb.co/HTp8L46/Screenshot-20240710-090301.png")
+![App Screenshot]([https://i.ibb.co/MgKyhdd/Screenshot-20240710-090301.png")
+
+
 
