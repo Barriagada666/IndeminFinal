@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración de metadatos del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarga La Aplicacion CheckListAPP Indemin</title>
+    <!-- Favico -->
+    <link rel="icon" type="image/x-icon" href="https://github.com/AlvaroFenero/IndeminFinal/blob/main/src/assets/icon/favicon.png">
+
+    <!-- Estilos CSS -->
+    <style>
+        /* Estilos generales del cuerpo de la página */
+        body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        margin: 20px;
+        color: #FE9900;
+        border-radius: 10px; /* Redondear bordes de la web */
+        background-image: url('https://raw.githubusercontent.com/AlvaroFenero/IndeminFinal/main/src/assets/Wallpaper-Maquinas.webp'); /* URL de tu imagen webp */
+        background-size: 100% 100%; /* Estirar la imagen al tamaño de la ventana */
+        background-attachment: fixed; /* Mantener la imagen fija al hacer scroll */
+        background-color: rgba(0, 0, 0, 8); /* Fondo negro transparente */
+        }
+
+        /* Estilos para el título principal */
+        h1 {
+            color: #FE9900;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 1px solid #FE9900; /* Línea separadora con color naranjo */
+            padding: 10px;
+            border-radius: 10px; /* Redondear bordes del título */
+            display: inline-block;
+        }
+
+        /* Estilos para subtítulos */
+        h2 {
+            color: #58FF33;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 1px solid #58FF33; /* Línea separadora con color verde */
+            padding: 10px;
+            border-radius: 10px; /* Redondear bordes del título */
+            display: inline-block;
+        }
+
+        /* Estilos para el logotipo en el título */
+        h1 img {
+            max-width: 100px;
+            border-radius: 9%; /* Redondear bordes del logo */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 40px;
+            background-color: #333; /* Color de fondo del pie de página */
+            color: #FE9900; /* Color del texto del pie de página */
+            border-radius: 10px; /* Redondear bordes del pie de página */
+            border-bottom: 1px solid #FE9900; /* Línea separadora con color naranjo */
+            display: inline-block;
+        }
+
+        /* Estilos para los mensajes en PC y dispositivos móviles */
+        #pc-message, #mobile-message {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para el código QR en PC */
+        #pc-qr-code {
+            width: 200px;
+            height: 200px;
+            margin-top: 15px;
+            border-radius: 10px; /* Redondear bordes del código QR */
+        }
+
+        /* Estilos para el botón de descarga en dispositivos móviles */
+        #mobile-download-btn {
+            background-color: #0080ff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos al pasar el ratón sobre el botón de descarga en dispositivos móviles */
+        #mobile-download-btn:hover {
+            background-color: #005bb6;
+        }
+
+        /* Estilos específicos para PC utilizando media queries */
+        @media only screen and (min-width: 600px) {
+            #pc-message {
+                display: block;
+                margin: 0 auto;
+                max-width: 400px;
+            }
+
+            #pc-qr-code {
+                display: block;
+                margin: 0 auto;
+            }
+
+            #mobile-message {
+                display: none;
+            }
+
+            #mobile-download-btn {
+                display: none;
+            }
+        }
+
+        /* Estilos específicos para dispositivos móviles utilizando media queries */
+        @media only screen and (max-width: 599px) {
+            #mobile-message {
+                display: block;
+                margin: 0 auto;
+                max-width: 400px;
+            }
+
+            #pc-message {
+                display: none;
+            }
+
+            #pc-qr-code {
+                display: none;
+            }
+
+            #mobile-download-btn {
+                display: block;
+                margin: 0 auto;
+            }
+        }
+
+        /* Estilos para un botón personalizado */
+        .myButton {
+            box-shadow: -2px 12px 19px -7px #3dc21b;
+            background:linear-gradient(to bottom, #0099ff 5%, #5cbf2a 100%);
+            background-color:#44c767;
+            border-radius:8px;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:20px;
+            font-weight:bold;
+            padding:15px 15px;
+            text-decoration:none;
+            text-shadow:0px 3px 0px #2f6627;
+        }
+
+        /* Estilos al pasar el ratón sobre el botón personalizado */
+        .myButton:hover {
+            background:linear-gradient(to bottom, #5cbf2a 5%, #44c767 100%);
+            background-color:#5cbf2a;
+        }
+
+        /* Estilos al hacer clic en el botón personalizado */
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenido del cuerpo de la página -->
+    <h1>
+        <a>
+<img src="https://i.ibb.co/7Js7V1P/Indemin-logo.png" ></a>
+    <!-- Sección para usuarios de PC -->
+        </a>
+CheckListAPP Indemin
+    </h1>
+
+    <!-- Sección para usuarios de PC -->
+    <div id="pc-message">
+        <h2>Estás en un COMPUTADOR.</h2>
+<p>Escanea el siguiente QR para descargar la APK CheckListAPP Indemin:</p>
+<img src="https://i.ibb.co/hBWg8Z2/QR.png" style="width: 100%; height: auto;">
+    </div>
+
+    <!-- Sección para usuarios de dispositivos móviles -->
+    <div id="mobile-message">
+        <h2>Estás en un Dispositivo Móvil.</h2>
+<img src="https://i.ibb.co/7Js7V1P/Indemin-logo.png" style="width: 100%; height: auto;">
+        <button class="myButton" onclick="window.open('https://raw.githubusercontent.com/AlvaroFenero/IndeminFinal/main/android/Indemin-CheckApp.apk')">
+            Descargar APK CheckListAPP Indemin.
+        </button>
+    </div>
+    <footer>
+<p>Copyright &copy; - 2024 Boris Arriagada - Alejandro Troncoso - Alvaro Fenero. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
+
+
+
