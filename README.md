@@ -37,7 +37,7 @@ ionic serve
 
 ## Capturas de pantalla
 
-![App Screenshot]([https://i.ibb.co/MgKyhdd/Screenshot-20240710-090301.png")
+![App Screenshot](https://i.ibb.co/QJh7c00/Screenshot-20240710-090301.png")
 
 
 
