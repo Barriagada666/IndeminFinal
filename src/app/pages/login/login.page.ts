@@ -33,13 +33,13 @@ export class LoginPage implements OnInit {
     this.isLoaded = false; // Activar la barra de carga al presionar el botón
 
     try {
-      const usuario = await this.supabaseService.login(this.userLogin).toPromise();
+      const response = await this.supabaseService.login(this.userLogin).toPromise();
   
-      if (usuario && usuario.user) {
-        // Guardar el tipo de usuario y el id de usuario en localStorage
-        localStorage.setItem('tipo_usuario', usuario.user.tipo_usuario);
-        localStorage.setItem('userId', usuario.user.id_usuario.toString()); // Almacenar como cadena en localStorage
-        this.handleSuccessfulLogin(usuario.user);
+      if (response && response.user) {
+        const usuario = response.user;
+        localStorage.setItem('tipo_usuario', usuario.tipo_usuario);
+        localStorage.setItem('userId', usuario.id_usuario.toString()); // Almacenar como cadena en localStorage
+        this.handleSuccessfulLogin(usuario);
       } else {
         this.presentToast("Usuario y/o Contraseña incorrectas");
       }

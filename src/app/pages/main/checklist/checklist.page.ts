@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChecklistService } from 'src/app/services/checklist.service';
-import { Checklist, Component as ChecklistComponent, ChecklistRealizado, Task } from 'src/app/models/Checklist';
+import { Checklist, Component as ChecklistComponent, EstadoTarea, RealizarChecklistRequest, Task } from 'src/app/models/Checklist';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { ChecklistRealizadoService } from 'src/app/services/checklist-realizado.service'; // Importa el servicio ChecklistRealizadoService
+import { Observable, forkJoin, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checklist',
@@ -23,8 +25,9 @@ export class ChecklistPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private checklistService: ChecklistService,
-    private checklistRealizadoService: ChecklistRealizadoService, // Inyecta el servicio ChecklistRealizadoService
+    private checklistRealizado: ChecklistRealizadoService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private alertController: AlertController
@@ -44,6 +47,13 @@ export class ChecklistPage implements OnInit {
       message: 'Cargando checklist...',
     });
     await loading.present();
+  }
+
+  async LoadingBoton() {
+    const loading  = await this.loadingCtrl.create({
+      message: 'Enviando checklist...'
+    });
+    await loading.present()
   }
 
   dismissLoading() {
@@ -186,6 +196,7 @@ export class ChecklistPage implements OnInit {
   onSubmit() {
     let incompleteTaskFound = false;
   
+    // Recorrer cada checklist, componente y tarea para verificar el estado de las tareas
     this.checklists.forEach(checklist => {
       checklist.componentes.forEach(component => {
         component.tasks.forEach(task => {
@@ -197,31 +208,88 @@ export class ChecklistPage implements OnInit {
       });
     });
   
-    if (!incompleteTaskFound) {
-      const checklistRealizado: ChecklistRealizado = {
+    // Si se encontraron tareas incompletas, salir sin enviar el checklist
+    if (incompleteTaskFound) {
+      return;
+    }
+  
+    // Preparar objeto para enviar al backend
+    this.LoadingBoton();
+    const updateTasksObservables: Observable<any>[] = []; // Declarar como array de Observables<any>
+
+    this.checklists.forEach(checklist => {
+      checklist.componentes.forEach(component => {
+        component.tasks.forEach(task => {
+          const taskId = task.id_tarea;
+          let newStatus = this.taskStatuses[taskId];
+
+          // Transformar 'green' a 'Finalizado'
+          if (newStatus === 'green') {
+            newStatus = 'Finalizado';
+          }
+
+          // Hacer patch al estado de la tarea y guardar el observable en un arreglo
+          const updateObservable = this.checklistRealizado.updateTaskStatus(taskId, newStatus);
+          updateTasksObservables.push(updateObservable);
+        });
+      });
+    });
+
+    // Ejecutar todas las actualizaciones de estado en paralelo usando forkJoin
+    forkJoin(updateTasksObservables).subscribe(() => {
+      // Una vez completadas todas las actualizaciones, enviar el checklist realizado
+      const checklistRealizado: RealizarChecklistRequest = {
         id_checklist: this.id_checklist,
-        id_usuario: this.loggedUserId,
         fecha_realizacion: new Date().toISOString(),
-        comentarios: this.observaciones
+        comentarios: this.observaciones,
+        estados_tareas: []
       };
+  
+      // Construir el arreglo de estados de tareas
+      this.checklists.forEach(checklist => {
+        checklist.componentes.forEach(component => {
+          component.tasks.forEach(task => {
+            const estadoTarea: EstadoTarea = {
+              id_tarea: task.id_tarea,
+              status: this.taskStatuses[task.id_tarea]
+            };
+
+            // Transformar 'green' a 'Finalizado' en el estado de la tarea
+            if (estadoTarea.status === 'green') {
+              estadoTarea.status = 'Finalizado';
+            }
+
+            checklistRealizado.estados_tareas.push(estadoTarea);
+          });
+        });
+      });
   
       // Mostrar los datos que se enviarán al backend en la consola
       console.log('Datos a enviar al backend:', checklistRealizado);
   
       // Lógica para enviar los datos al backend
-      this.checklistRealizadoService.guardarChecklist(checklistRealizado).subscribe(
+      this.checklistRealizado.guardarChecklist(checklistRealizado).subscribe(
         response => {
           console.log('Respuesta del backend:', response);
-          // Aquí puedes manejar la respuesta del backend si es necesario
-          // Por ejemplo, mostrar un mensaje de éxito o navegar a otra página
         },
-        error => {
-          console.error('Error al guardar el checklist:', error);
-          // Aquí puedes manejar el error si ocurre alguno
-          // Por ejemplo, mostrar un mensaje de error al usuario
-        }
-      );
-    }
+      )
+      this.dismissLoading(); // Ocultar loading al finalizar el envío
+      this.presentSuccessAlert();
+    });
   }
 
+  async presentSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Datos Enviados',
+      message: 'Los datos han sido enviados correctamente.',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.router.navigateByUrl('/home'); // Navegar al home al presionar OK
+        }
+      }]
+    });
+
+    await alert.present();
+  }
 }

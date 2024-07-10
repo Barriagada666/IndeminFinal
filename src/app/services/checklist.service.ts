@@ -81,11 +81,6 @@ export class ChecklistService {
     );
   }
 
-  updateTaskStatus(taskId: number, newStatus: string): Observable<any> {
-    return this.http.patch<any>(`${this.baseUrl}/update_task_status/${taskId}`, { status: newStatus }, { headers: this.supabaseHeaders }).pipe(
-      catchError(this.handleError)
-    );
-  }
 
   saveTaskComment(taskId: number, comment: string): Observable<any> {
     const url = `${this.baseUrl}/save_task_comment/${taskId}`;

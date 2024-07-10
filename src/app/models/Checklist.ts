@@ -24,11 +24,11 @@ export interface Checklist {
 export interface EstadoTarea {
     id_tarea: number; // 
     status: string; // 
-    comment: string; //
   }
-  export interface ChecklistRealizado {
-    id_checklist: number;  // ID del checklist realizado
-    id_usuario: number;    // ID del usuario que realizó el checklist
-    fecha_realizacion: string;  // Fecha de realización en formato ISO 
-    comentarios: string;  // Comentarios opcionales
-  }
+
+export interface RealizarChecklistRequest {
+    id_checklist: number;
+    fecha_realizacion: string;
+    comentarios?: string;
+    estados_tareas: EstadoTarea[];
+}

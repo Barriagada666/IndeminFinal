@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { userLogin } from '../models/userLogin';
 
 @Injectable({
@@ -16,6 +16,12 @@ export class SupabaseService {
   login(userLogin: userLogin): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/usuario`, { email: userLogin.email, password: userLogin.password })
       .pipe(
+        map(response => {
+          if (response && response.token) {
+            localStorage.setItem('authToken', response.token); // Guardar el token en localStorage
+          }
+          return response;
+        }),
         catchError(this.handleError)
       );
   }

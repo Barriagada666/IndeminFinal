@@ -22,13 +22,6 @@ export interface EstadoTarea {
     status: string;
 }
 
-export interface ChecklistRealizado {
-    id_checklist_realizado: number;
-    id_checklist: number;
-    id_usuario: number;
-    fecha_realizacion: string;
-    comentarios: string;
-}
 
 export interface EstadoTareaRealizada {
     id_estado_tarea: number;
@@ -36,3 +29,5 @@ export interface EstadoTareaRealizada {
     id_tarea: number;
     estado: string;
 }
+
+
