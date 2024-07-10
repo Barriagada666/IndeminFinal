@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { userLogin } from 'src/app/models/userLogin';
-import { AppComponent } from 'src/app/app.component';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -18,12 +17,12 @@ export class LoginPage implements OnInit, OnDestroy {
     tipo_usuario: ''
   };
 
+  rememberMe: boolean = false;
 
   constructor(
     private router: Router,
     private supabaseService: SupabaseService,
     private toastController: ToastController,
-    private appComponent: AppComponent,
     private loadingCtrl: LoadingController,
     private menu: MenuController
   ) {}
@@ -34,11 +33,13 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   async login() {
-    await this.LoadingBoton(); // Mostrar carga al iniciar sesión
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...'
+    });
+    await loading.present();
 
     try {
       const response = await this.supabaseService.login(this.userLogin).toPromise();
-
       if (response && response.user) {
         const usuario = response.user;
         localStorage.setItem('tipo_usuario', usuario.tipo_usuario);
@@ -49,42 +50,14 @@ export class LoginPage implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.error('Error en la autenticación:', error);
-      let errorMessage = 'Ocurrió un error en la autenticación. Por favor, inténtelo de nuevo.';
-
-      if (typeof error === 'string') {
-        errorMessage = error;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (error && typeof error === 'object' && error.hasOwnProperty('error')) {
-        errorMessage = error.toString();
-      }
-
-      this.presentToast(errorMessage);
-    } finally 
-    {
-      await this.dismissLoading(); // Ocultar carga al finalizar inicio de sesión
-      this.appComponent.checkSession();
+      this.presentToast('Ocurrió un error en la autenticación. Por favor, inténtelo de nuevo.');
+    } finally {
+      await loading.dismiss();
     }
   }
 
-  async LoadingBoton() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Iniciando sesión...'
-    });
-    await loading.present();
-  }
-
-  async dismissLoading() {
-    await this.loadingCtrl.dismiss();
-  }
-
   handleSuccessfulLogin(usuario: any) {
-    console.log('Usuario logueado:', usuario);
-    this.dismissLoading(); // Asegúrate de ocultar la carga al finalizar correctamente
-    this.menu.enable(true);
-    const userType = usuario.tipo_usuario;
-
-    if (userType === 'admin') {
+    if (usuario.tipo_usuario === 'admin') {
       this.router.navigate(['/admin']);
     } else {
       this.router.navigate(['/home']);
@@ -100,8 +73,11 @@ export class LoginPage implements OnInit, OnDestroy {
     toast.present();
   }
 
+  navigateToResetPassword() {
+    this.router.navigate(['/reset-password']);
+  }
+
   ngOnDestroy() {
     this.menu.enable(true); // Habilitar el menú deslizante al destruir el componente
-    // Puede realizar limpieza adicional aquí si es necesario al destruir el componente
   }
 }

@@ -1,12 +1,12 @@
 <ion-app>
   <ion-menu menuId="main-menu" contentId="main-content">
-    <ion-header>
+    <ion-header *ngIf="!isLoginPage">
       <ion-toolbar class="custom-toolbar">
         <ion-title>Menú</ion-title>
       </ion-toolbar>
     </ion-header>
   
-    <ion-content>
+    <ion-content *ngIf="!isLoginPage">
       <ion-list class="custom-item">
         <!-- Búsqueda de Checklists -->
         <ion-item (click)="navigateTo('home')">
@@ -39,7 +39,7 @@
         </ion-item>
   
         <!-- Acerca de -->
-        <ion-item >
+        <ion-item>
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           <ion-label>Acerca de</ion-label>
         </ion-item>
@@ -56,12 +56,12 @@
   </ion-menu>
 
   <div class="ion-page" id="main-content">
-    <ion-header *ngIf="isLoggedIn">
+    <ion-header *ngIf="!isLoginPage">
       <ion-toolbar class="custom-toolbar">
         <ion-buttons slot="start">
           <ion-menu-button menu="main-menu" autoHide="false"></ion-menu-button>
         </ion-buttons>
-        <ion-title class="custom-title">Indemin<ion-img src="assets/icon/favicon.png" class="favicon-icon"></ion-img> </ion-title>
+        <ion-title class="custom-title">Indemin<ion-img src="assets/icon/favicon.png" class="favicon-icon"></ion-img></ion-title>
       </ion-toolbar>
     </ion-header>
     

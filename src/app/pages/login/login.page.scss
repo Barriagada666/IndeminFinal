@@ -1,20 +1,49 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
 .center-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: white; /* Fondo blanco */
+  height: 80vh;
 }
 
 .logo-container {
-  margin-bottom: 20px; /* Margen inferior para separar del contenido siguiente */
-  padding: 20px; /* Margen interno para separar del borde exterior */
-  background-color: #ffffff; /* Opcional: color de fondo blanco */}
+  margin-top: 50px; /* Ajusta este valor para mover la tarjeta hacia abajo */
+  margin-bottom: 80px; /* Ajusta este valor para mover la tarjeta hacia arriba */
+  animation: fadeIn 1s ease-in-out; /* Aplicar animación al cargar */
+
+}
 
 .login-card {
-  width: 80%;
+  width: 100%;
   max-width: 400px; /* Ancho máximo de la tarjeta */
+  margin-top: 40px; /* Ajusta este valor para mover la tarjeta hacia abajo */
+  margin-bottom: 20px; /* Ajusta este valor para mover la tarjeta hacia arriba */
+  animation: slideInUp 1s ease-in-out; /* Aplicar animación al cargar */
+
 }
 
 .custom-orange {
@@ -22,4 +51,20 @@
   --ion-color-base-rgb: 255,165,0; /* Opcional: define el color de base en formato RGB */
 }
 
-  
+ion-button.login-button {
+  --background: #ff6600; /* Color de fondo naranja */
+  --color: #fff; /* Color del texto blanco */
+  --border-radius: 50px; /* Bordes redondeados */
+  --padding-start: 20px; /* Espaciado interno a la izquierda */
+  --padding-end: 20px; /* Espaciado interno a la derecha */
+  --padding-top: 10px; /* Espaciado interno arriba */
+  --padding-bottom: 10px; /* Espaciado interno abajo */
+}
+
+ion-card {
+  border-radius: 20px; /* Bordes redondeados */
+}
+
+ion-card-content {
+  padding: 1rem;
+}

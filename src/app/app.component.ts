@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MenuController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { App } from '@capacitor/app';
@@ -12,16 +12,26 @@ import { App } from '@capacitor/app';
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
+  isLoginPage: boolean = false;
 
   constructor(
     private router: Router,
     private menu: MenuController,
     private platform: Platform,
     private location: Location
-  ) {}
+  ) {
+    // Escuchar eventos de navegación para desactivar el menú en la página de inicio de sesión
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isLoginPage = this.router.url === '/login';
+        this.menu.enable(!this.isLoginPage, 'main-menu');
+      }
+    });
+  }
 
   ngOnInit() {
     this.checkSession();
+    this.initializeBackButtonCustomHandler();
   }
 
   initializeBackButtonCustomHandler(): void {
