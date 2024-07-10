@@ -10,11 +10,6 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./pages/main/admin/admin.module').then(m => m.AdminPageModule) },
   { path: 'checklist', loadChildren: () => import('./pages/main/checklist/checklist.module').then(m => m.ChecklistPageModule) },
   { path: 'crear-maquina', loadChildren: () => import('./pages/main/crear-maquina/crear-maquina.module').then(m => m.CrearMaquinaPageModule) },
-  { path: 'ver-checklist', loadChildren: () => import('./pages/main/ver-checklist/ver-checklist.module').then(m => m.VerChecklistPageModule) },
-  {
-    path: 'menu-checklist',
-    loadChildren: () => import('./pages/menu-checklist/menu-checklist.module').then( m => m.MenuChecklistPageModule)
-  },
 
 ];
 

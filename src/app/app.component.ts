@@ -11,7 +11,7 @@ import { App } from '@capacitor/app';
 })
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
-  isAdmin: boolean = false; // Nueva propiedad para verificar si es administrador
+  isAdmin: boolean = false;
 
   constructor(
     private router: Router,
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.checkSession(); // Verifica sesión al inicializar el componente
+    this.checkSession();
   }
 
   initializeBackButtonCustomHandler(): void {
@@ -51,20 +51,19 @@ export class AppComponent implements OnInit {
 
   cerrarSesion() {
     console.log('Cerrar sesión');
-    localStorage.removeItem('tipo_usuario'); // Borra el tipo de usuario
-    localStorage.removeItem('userId'); // Borra el email del usuario
-    this.router.navigate(['/login']); // Redirige a la página de login
-    this.closeMenu(); // Cierra el menú si está abierto
-    this.isLoggedIn = false; // Actualiza el estado de sesión
-    this.isAdmin = false; // Reinicia el estado de administrador
+    localStorage.removeItem('tipo_usuario');
+    localStorage.removeItem('userId');
+    this.router.navigate(['/login']);
+    this.closeMenu();
+    this.isLoggedIn = false;
+    this.isAdmin = false;
   }
-  
 
   checkSession() {
     const tipoUsuario = localStorage.getItem('tipo_usuario');
     if (tipoUsuario) {
       this.isLoggedIn = true;
-      this.checkUserType(); // Llama a la función para verificar si es administrador
+      this.checkUserType();
     } else {
       this.isLoggedIn = false;
       this.isAdmin = false;
@@ -73,7 +72,6 @@ export class AppComponent implements OnInit {
 
   private checkUserType(): void {
     const tipoUsuario = localStorage.getItem('tipo_usuario');
-    this.isAdmin = tipoUsuario === 'admin'; // Asigna true si es admin, false de lo contrario
+    this.isAdmin = tipoUsuario === 'admin';
   }
-
 }

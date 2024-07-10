@@ -43,3 +43,53 @@
   --padding-bottom: 12px; // espacio interior inferior del toast
   font-size: 14px; // tamaño de fuente del texto del toast
 }
+
+.custom-button {
+  --background: linear-gradient(45deg, #f88400, #c3704a);
+  --border-radius: 8px;
+  margin-top: 20px;
+  width: 100%; /* Cambiado a ancho completo */
+  max-width: 200px; /* Ancho máximo para controlar la expansión */
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+  margin-left: auto; /* Centrar horizontalmente */
+  margin-right: auto; /* Centrar horizontalmente */
+}
+
+.custom-button:hover {
+  --background: linear-gradient(45deg, #388E3C, #7CB342);
+}
+
+.observation-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  text-align: left; /* Alinea el contenido a la izquierda */
+  display: flex;
+  justify-content: flex-start; /* Alinea el contenido a la izquierda */
+  align-items: center;
+  margin-left: 10px; /* Agrega un margen izquierdo de 10px */
+}
+
+.observation-label {
+  font-size: 22px; /* Aumenta el tamaño de la fuente del título */
+  font-weight: bold; /* Texto en negrita */
+  width: 100%;
+  margin-left: 10px; /* Agrega un margen izquierdo de 10px */
+  margin-right: auto; /* Centrar horizontalmente */
+  display: block; /* Ajusta el ancho al contenido */
+  text-align: left; /* Alinea el contenido a la izquierda */
+}
+
+.observation-textarea {
+  font-size: 16px;
+  min-height: 150px;
+  padding: 10px;
+  width: calc(100% - 20px); /* Ajuste para dejar espacio a los lados */
+  margin: 10px auto; /* Centra verticalmente */
+  background-color: #c9c6c6; /* Fondo blanco */
+  border: 1px solid #252525; /* Borde gris claro */
+  border-radius: 8px; /* Bordes redondeados */
+}
+

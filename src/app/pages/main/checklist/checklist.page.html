@@ -38,12 +38,12 @@
       </ion-list>
     </ion-list>
     <!-- Campo de observaciones para el checklist -->
-    <ion-item *ngIf="!isLoadingChecklists">
-      <ion-label position="stacked">Observaciones</ion-label>
-      <ion-textarea [(ngModel)]="observaciones" name="observaciones" rows="6"></ion-textarea>
+    <ion-item *ngIf="!isLoadingChecklists" class="observation-item">
+      <ion-label class="observation-label" position="stacked">Observaciones</ion-label>
+      <ion-textarea class="observation-textarea" [(ngModel)]="observaciones" name="observaciones" rows="6"></ion-textarea>
     </ion-item>
     <!-- Botón de guardar -->
-    <ion-button expand="full" type="submit">Guardar</ion-button>
+    <ion-button expand="block" type="submit" class="custom-button">Guardar</ion-button>
   </form>
 
   <ion-list *ngIf="checklists.length === 0">
