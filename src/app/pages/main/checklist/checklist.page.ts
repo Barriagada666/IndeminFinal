@@ -195,52 +195,63 @@ export class ChecklistPage implements OnInit {
 
   onSubmit() {
     let incompleteTaskFound = false;
+    let redTaskWithoutCommentFound = false;
   
     // Recorrer cada checklist, componente y tarea para verificar el estado de las tareas
     this.checklists.forEach(checklist => {
       checklist.componentes.forEach(component => {
         component.tasks.forEach(task => {
-          if (this.taskStatuses[task.id_tarea] !== 'green') {
+          const taskStatus = this.taskStatuses[task.id_tarea];
+          if (taskStatus !== 'green' && taskStatus !== 'red') {
             this.presentIncompleteTasksAlert(component.nombre, task.nombre);
             incompleteTaskFound = true;
+          } else if (taskStatus === 'red' && (!this.observaciones || this.observaciones.trim() === '')) {
+            this.presentRedTaskWithoutCommentAlert(component.nombre, task.nombre);
+            redTaskWithoutCommentFound = true;
           }
         });
       });
     });
   
-    // Si se encontraron tareas incompletas, salir sin enviar el checklist
-    if (incompleteTaskFound) {
+    // Si se encontraron tareas incompletas o tareas en rojo sin comentario, salir sin enviar el checklist
+    if (incompleteTaskFound || redTaskWithoutCommentFound) {
       return;
     }
   
     // Preparar objeto para enviar al backend
     this.LoadingBoton();
     const updateTasksObservables: Observable<any>[] = []; // Declarar como array de Observables<any>
-
+  
     this.checklists.forEach(checklist => {
       checklist.componentes.forEach(component => {
         component.tasks.forEach(task => {
           const taskId = task.id_tarea;
           let newStatus = this.taskStatuses[taskId];
-
-          // Transformar 'green' a 'Finalizado'
+  
+          // Transformar 'green' a 'Realizado' y 'red' a 'No Realizado'
           if (newStatus === 'green') {
-            newStatus = 'Finalizado';
+            newStatus = 'Realizado';
+          } else if (newStatus === 'red') {
+            newStatus = 'No Realizado';
           }
-
+  
           // Hacer patch al estado de la tarea y guardar el observable en un arreglo
           const updateObservable = this.checklistRealizado.updateTaskStatus(taskId, newStatus);
           updateTasksObservables.push(updateObservable);
         });
       });
     });
-
+  
     // Ejecutar todas las actualizaciones de estado en paralelo usando forkJoin
     forkJoin(updateTasksObservables).subscribe(() => {
-      // Una vez completadas todas las actualizaciones, enviar el checklist realizado
+      // Obtener la hora local del dispositivo en formato adecuado para la base de datos
+      const now = new Date();
+      const offset = now.getTimezoneOffset() * 60000; // Offset en milisegundos
+      const localDateTime = new Date(now.getTime() - offset).toISOString().slice(0, 19).replace('T', ' ');
+  
       const checklistRealizado: RealizarChecklistRequest = {
         id_checklist: this.id_checklist,
-        fecha_realizacion: new Date().toISOString(),
+        fecha_realizacion: localDateTime, // Usar la hora local del dispositivo
         comentarios: this.observaciones,
         estados_tareas: []
       };
@@ -253,12 +264,14 @@ export class ChecklistPage implements OnInit {
               id_tarea: task.id_tarea,
               status: this.taskStatuses[task.id_tarea]
             };
-
-            // Transformar 'green' a 'Finalizado' en el estado de la tarea
+  
+            // Transformar 'green' a 'Realizado' y 'red' a 'No Realizado' en el estado de la tarea
             if (estadoTarea.status === 'green') {
-              estadoTarea.status = 'Finalizado';
+              estadoTarea.status = 'Realizado';
+            } else if (estadoTarea.status === 'red') {
+              estadoTarea.status = 'No Realizado';
             }
-
+  
             checklistRealizado.estados_tareas.push(estadoTarea);
           });
         });
@@ -271,11 +284,13 @@ export class ChecklistPage implements OnInit {
       this.checklistRealizado.guardarChecklist(checklistRealizado).subscribe(
         response => {
           console.log('Respuesta del backend:', response);
+          this.dismissLoading(); // Ocultar loading al finalizar el envío
+          this.presentSuccessAlert();
         },
-      )
-      this.dismissLoading(); // Ocultar loading al finalizar el envío
-      this.presentSuccessAlert();
-    });
+    )
+    this.dismissLoading(); // Ocultar loading al finalizar el envío
+    this.presentSuccessAlert();
+  });
   }
 
   async presentSuccessAlert() {
@@ -292,4 +307,14 @@ export class ChecklistPage implements OnInit {
 
     await alert.present();
   }
+  async presentRedTaskWithoutCommentAlert(componentName: string, taskName: string) {
+    const alert = await this.alertController.create({
+      header: 'Tarea sin Realizar y sin observación',
+      message: `La tarea '${taskName}' del componente '${componentName}' está sin realizar y requiere una Observación.`,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
 }
