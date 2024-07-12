@@ -43,7 +43,7 @@
       <ion-textarea class="observation-textarea" [(ngModel)]="observaciones" name="observaciones" rows="6"></ion-textarea>
     </ion-item>
     <!-- Botón de guardar -->
-    <ion-button expand="block" type="submit" class="custom-button">Guardar</ion-button>
+    <ion-button *ngIf="!isLoadingChecklists" expand="block" type="submit" class="custom-button">Guardar</ion-button>
   </form>
 
   <ion-list *ngIf="checklists.length === 0">
@@ -51,7 +51,7 @@
       <ion-row>
         <ion-col class="ion-text-center">
           <ion-text color="medium">
-            <p>No se ha encontrado un checklist para este código interno.</p>
+            <p>Buscando...</p>
           </ion-text>
         </ion-col>
       </ion-row>

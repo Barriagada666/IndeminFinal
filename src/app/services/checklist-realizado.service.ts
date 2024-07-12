@@ -8,7 +8,7 @@ import { RealizarChecklistRequest } from '../models/Checklist';
   providedIn: 'root'
 })
 export class ChecklistRealizadoService {
-  private baseUrl = 'https://backend-indemin-q64w.onrender.com/api'; // Cambia esta URL por la URL de tu backend
+  private baseUrl = 'http://127.0.0.1:5000/api'; // Cambia esta URL por la URL de tu backend
 
   supabaseHeaders = new HttpHeaders()
   .set('Content-Type', 'application/json')
@@ -19,21 +19,32 @@ export class ChecklistRealizadoService {
 
   guardarChecklist(checklistRealizado: RealizarChecklistRequest): Observable<any> {
     const token = localStorage.getItem('authToken'); // Obtén el token del localStorage
+    if (!token) {
+      console.error('Token no encontrado en localStorage');
+      return throwError('Token no encontrado en localStorage');
+    }
+    
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}` // Agrega el token al encabezado de autorización
     });
-
+  
     console.log('Enviando checklist:', checklistRealizado); // Debug: Mostrar los datos que se envían
     console.log('Encabezados de la solicitud:', headers); // Debug: Mostrar los encabezados de la solicitud
-
+  
     return this.http.post<any>(`${this.baseUrl}/realizar_checklist`, checklistRealizado, { headers }).pipe(
       catchError(this.handleError)
     );
   }
 
   updateTaskStatus(taskId: number, newStatus: string): Observable<any> {
-    return this.http.patch<any>(`${this.baseUrl}/update_task_status/${taskId}`, { status: newStatus }, { headers: this.supabaseHeaders }).pipe(
+    const token = localStorage.getItem('authToken'); // Obtén el token del localStorage
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Agrega el token al encabezado de autorización
+    });
+
+    return this.http.patch<any>(`${this.baseUrl}/update_task_status/${taskId}`, { status: newStatus }, { headers }).pipe(
       catchError(this.handleError)
     );
   }
