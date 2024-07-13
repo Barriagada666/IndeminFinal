@@ -40,6 +40,12 @@ ion-button {
     background: linear-gradient(to bottom right, #040e35, #042f5f, #04204f, #042c54, #041c44) !important;
 }
 
+body.dark {
+    --ion-background-color: #222;
+    --ion-text-color: #ffffff;
+    /* Otros estilos de tema oscuro */
+  }
+
 .submit {
     margin-top: 40px;
 }

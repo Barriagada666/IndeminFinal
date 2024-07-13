@@ -292,6 +292,7 @@ export class ChecklistPage implements OnInit {
     this.presentSuccessAlert();
   });
   }
+  
 
   async presentSuccessAlert() {
     const alert = await this.alertController.create({

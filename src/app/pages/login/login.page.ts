@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, MenuController } from '@ionic/angular';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { userLogin } from 'src/app/models/userLogin';
-import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +32,16 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   async login() {
+    if (!this.isValidEmail(this.userLogin.email)) {
+      this.presentToast('Por favor, ingrese un correo electrónico válido.');
+      return;
+    }
+
+    if (this.userLogin.password.length < 6) {
+      this.presentToast('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
     const loading = await this.loadingCtrl.create({
       message: 'Iniciando sesión...'
     });
@@ -44,6 +53,7 @@ export class LoginPage implements OnInit, OnDestroy {
         const usuario = response.user;
         localStorage.setItem('tipo_usuario', usuario.tipo_usuario);
         localStorage.setItem('userId', usuario.id_usuario.toString());
+        localStorage.setItem('userEmail', this.userLogin.email); // Guardar el email del usuario
         this.handleSuccessfulLogin(usuario);
       } else {
         this.presentToast('Usuario y/o Contraseña incorrectas');
@@ -75,6 +85,11 @@ export class LoginPage implements OnInit, OnDestroy {
 
   navigateToResetPassword() {
     this.router.navigate(['/reset-password']);
+  }
+
+  isValidEmail(email: string): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\.,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,})$/i;
+    return re.test(String(email).toLowerCase());
   }
 
   ngOnDestroy() {

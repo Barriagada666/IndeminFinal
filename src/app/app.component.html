@@ -21,25 +21,20 @@
         </ion-item>
   
         <!-- Perfil -->
-        <ion-item>
+        <ion-item (click)="openProfileAlert()">
           <ion-icon slot="start" name="person-outline"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
   
         <!-- Configuración -->
-        <ion-item>
+        <ion-item (click)="openSettingsAlert()">
           <ion-icon slot="start" name="settings-outline"></ion-icon>
           <ion-label>Configuración</ion-label>
         </ion-item>
   
-        <!-- Ayuda -->
-        <ion-item>
-          <ion-icon slot="start" name="help-circle-outline"></ion-icon>
-          <ion-label>Ayuda</ion-label>
-        </ion-item>
   
         <!-- Acerca de -->
-        <ion-item>
+        <ion-item (click)="openAboutAlert()">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           <ion-label>Acerca de</ion-label>
         </ion-item>
