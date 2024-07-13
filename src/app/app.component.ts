@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   isAdmin: boolean = false;
   isLoginPage: boolean = false;
   userEmail: string = '';
-  isDarkTheme: boolean = false; // Variable para controlar el tema
+  isDarkTheme: boolean = false; 
+  
 
   constructor(
     private router: Router,

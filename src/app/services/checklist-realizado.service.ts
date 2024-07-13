@@ -8,7 +8,7 @@ import { RealizarChecklistRequest } from '../models/Checklist';
   providedIn: 'root'
 })
 export class ChecklistRealizadoService {
-  private baseUrl = 'http://127.0.0.1:5000/api'; // Cambia esta URL por la URL de tu backend
+  private baseUrl = 'https://backend-indemin-q64w.onrender.com'; // Cambia esta URL por la URL de tu backend
 
   supabaseHeaders = new HttpHeaders()
   .set('Content-Type', 'application/json')

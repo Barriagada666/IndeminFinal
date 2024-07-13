@@ -16,7 +16,21 @@
               Por favor, ingrese un correo electrónico válido.
             </ion-note>
             <ion-item>
-              <ion-input name="password" type="password" [(ngModel)]="userLogin.password" label="Contraseña" placeholder="Contraseña" required minlength="6"></ion-input>
+              <ion-input
+                name="password"
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="userLogin.password"
+                label="Contraseña"
+                placeholder="Contraseña"
+                required
+                minlength="6">
+              </ion-input>
+              <ion-icon
+                [name]="showPassword ? 'eye-off' : 'eye'"
+                slot="end"
+                (click)="togglePasswordVisibility()"
+                color="naranja">
+              </ion-icon>
             </ion-item>
             <ion-note *ngIf="userLogin.password && userLogin.password.length < 6" color="danger">
               La contraseña debe tener al menos 6 caracteres.

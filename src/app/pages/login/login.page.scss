@@ -20,8 +20,6 @@
   }
 }
 
-
-
 .center-container {
   display: flex;
   flex-direction: column;
@@ -34,7 +32,6 @@
   margin-top: 50px; /* Ajusta este valor para mover la tarjeta hacia abajo */
   margin-bottom: 80px; /* Ajusta este valor para mover la tarjeta hacia arriba */
   animation: fadeIn 1s ease-in-out; /* Aplicar animación al cargar */
-
 }
 
 .login-card {
@@ -43,7 +40,6 @@
   margin-top: 40px; /* Ajusta este valor para mover la tarjeta hacia abajo */
   margin-bottom: 20px; /* Ajusta este valor para mover la tarjeta hacia arriba */
   animation: slideInUp 1s ease-in-out; /* Aplicar animación al cargar */
-
 }
 
 .custom-orange {

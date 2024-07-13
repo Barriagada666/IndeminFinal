@@ -17,6 +17,7 @@ export class LoginPage implements OnInit, OnDestroy {
   };
 
   rememberMe: boolean = false;
+  showPassword: boolean = false; // Variable para controlar la visibilidad de la contraseña
 
   constructor(
     private router: Router,
@@ -90,6 +91,10 @@ export class LoginPage implements OnInit, OnDestroy {
   isValidEmail(email: string): boolean {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\.,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,})$/i;
     return re.test(String(email).toLowerCase());
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   ngOnDestroy() {
